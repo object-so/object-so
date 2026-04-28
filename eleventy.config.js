@@ -18,10 +18,10 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("assets");
   eleventyConfig.addPassthroughCopy("robots.txt");
   eleventyConfig.addPassthroughCopy("sitemap.xml");
+  eleventyConfig.addPassthroughCopy("app-ads.txt");
   eleventyConfig.addPassthroughCopy({ "index.html": "index.html" });
   eleventyConfig.addPassthroughCopy({ "ko/*.html": "ko" });
   eleventyConfig.addPassthroughCopy({ "en/*.html": "en" });
-  eleventyConfig.addPassthroughCopy("docs");
 
   // Watch CSS for live-reload during dev.
   eleventyConfig.addWatchTarget("assets/css/");
