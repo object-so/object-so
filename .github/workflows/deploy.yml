@@ -1,0 +1,116 @@
+name: Deploy to S3 + CloudFront
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: false
+
+permissions:
+  id-token: write   # required for AWS OIDC
+  contents: read
+
+env:
+  AWS_REGION: ap-northeast-2
+  AWS_ROLE_ARN: arn:aws:iam::200247611510:role/object-so-deploy
+  S3_BUCKET: object-so-200247611510-ap-northeast-2-an
+  CF_DISTRIBUTION_ID: E3GUZ9POF885VR
+
+jobs:
+  deploy:
+    name: S3 sync + CloudFront invalidation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: github-actions-${{ github.run_id }}
+
+      - name: hreflang/canonical/sitemap consistency self-check
+        run: python3 scripts/check-hreflang.py
+
+      - name: Sync fonts (1y immutable)
+        run: |
+          aws s3 sync ./assets/fonts/ "s3://${S3_BUCKET}/assets/fonts/" \
+            --cache-control "public, max-age=31536000, immutable" \
+            --content-type "font/otf" \
+            --exclude ".DS_Store" --no-progress
+
+      - name: Sync images (30d)
+        run: |
+          aws s3 sync ./assets/img/ "s3://${S3_BUCKET}/assets/img/" \
+            --cache-control "public, max-age=2592000" \
+            --exclude ".DS_Store" --no-progress
+
+      - name: Sync CSS (7d)
+        run: |
+          aws s3 sync ./assets/css/ "s3://${S3_BUCKET}/assets/css/" \
+            --cache-control "public, max-age=604800" \
+            --content-type "text/css; charset=utf-8" \
+            --exclude ".DS_Store" --no-progress
+
+      - name: Sync HTML (1h)
+        run: |
+          aws s3 cp ./index.html "s3://${S3_BUCKET}/index.html" \
+            --cache-control "public, max-age=3600" \
+            --content-type "text/html; charset=utf-8" --no-progress
+          aws s3 sync ./ko/ "s3://${S3_BUCKET}/ko/" \
+            --cache-control "public, max-age=3600" \
+            --content-type "text/html; charset=utf-8" \
+            --exclude "*" --include "*.html" --no-progress
+          aws s3 sync ./en/ "s3://${S3_BUCKET}/en/" \
+            --cache-control "public, max-age=3600" \
+            --content-type "text/html; charset=utf-8" \
+            --exclude "*" --include "*.html" --no-progress
+
+      - name: Sync robots + sitemap (no-cache)
+        run: |
+          aws s3 cp ./robots.txt "s3://${S3_BUCKET}/robots.txt" \
+            --cache-control "no-cache" \
+            --content-type "text/plain; charset=utf-8" --no-progress
+          aws s3 cp ./sitemap.xml "s3://${S3_BUCKET}/sitemap.xml" \
+            --cache-control "no-cache" \
+            --content-type "application/xml; charset=utf-8" --no-progress
+
+      - name: CloudFront invalidation
+        id: invalidate
+        run: |
+          INV_ID=$(aws cloudfront create-invalidation \
+            --distribution-id "${CF_DISTRIBUTION_ID}" \
+            --paths "/*" \
+            --query 'Invalidation.Id' --output text)
+          echo "invalidation_id=$INV_ID" >> "$GITHUB_OUTPUT"
+          echo "Created invalidation $INV_ID"
+
+      - name: Wait for invalidation to complete
+        run: |
+          aws cloudfront wait invalidation-completed \
+            --distribution-id "${CF_DISTRIBUTION_ID}" \
+            --id "${{ steps.invalidate.outputs.invalidation_id }}"
+
+      - name: Smoke test live site
+        run: |
+          set -e
+          # Resolve apex via Public DNS to bypass any CI runner DNS cache.
+          APEX_IP=$(dig @8.8.8.8 +short object.so | head -1)
+          [ -n "$APEX_IP" ] || { echo "DNS resolution failed"; exit 1; }
+          echo "object.so → $APEX_IP"
+          # Probe core routes; fail on any 4xx/5xx (excluding 301/302).
+          for path in "/" "/ko/" "/en/" "/ko/contact.html" "/en/contact.html" "/sitemap.xml" "/robots.txt"; do
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 \
+              --resolve "object.so:443:$APEX_IP" "https://object.so$path")
+            echo "  https://object.so$path → $CODE"
+            case "$CODE" in
+              2*|3*) ;;
+              *) echo "  ✗ unexpected status"; exit 1 ;;
+            esac
+          done
+          echo "  ✓ smoke test passed"
