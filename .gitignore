@@ -23,3 +23,8 @@ Thumbs.db
 # Local env
 .env
 .env.local
+
+# IDE / Tool artifacts (untracked)
+.serena/
+.playwright-mcp/
+AGENTS.md
