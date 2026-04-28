@@ -1,0 +1,20 @@
+{
+  "name": "object-so",
+  "version": "1.0.0",
+  "private": true,
+  "description": "오브젝트(Object) 회사 소개 사이트 — 정적 HTML/CSS, KO·EN 다국어",
+  "type": "module",
+  "scripts": {
+    "dev": "eleventy --serve --quiet",
+    "build": "eleventy",
+    "clean": "rm -rf _site",
+    "check:links": "echo 'See .github/workflows/check.yml — uses html-proofer in CI. For local: docker run -v $PWD/_site:/site klakegg/html-proofer /site --check-html --enforce-https'",
+    "check:json-ld": "find . -name '*.html' -not -path './_site/*' -not -path './node_modules/*' | xargs -I{} sh -c 'python3 -c \"import re, json, sys; s=open(sys.argv[1]).read(); m=re.search(r\\\"<script type=.application/ld\\\\+json.>\\\\s*(\\\\{.*?\\\\})\\\\s*</script>\\\", s, re.S); json.loads(m.group(1)) if m else None; print(\\\"OK \\\" + sys.argv[1])\" {}'",
+    "check:hreflang": "python3 scripts/check-hreflang.py"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "markdown-it": "^14.1.0",
+    "markdown-it-attrs": "^4.3.1"
+  }
+}

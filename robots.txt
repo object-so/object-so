@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Root redirect router is intentionally noindexed; crawlers should index
+# the language-specific pages directly via the sitemap below.
+Disallow: /index.html
+
+Sitemap: https://object.so/sitemap.xml

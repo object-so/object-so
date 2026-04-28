@@ -1,0 +1,596 @@
+/* =========================================================================
+   Object Design System
+   colors_and_type.css
+
+   Foundation tokens — colors & typography.
+   - Color palette: Open Color (https://yeun.github.io/open-color/)
+   - Typography: Pretendard (Korean + Latin)
+
+   Philosophy
+   ----------
+   회색을 파운데이션 컬러로 사용. 한두 가지 액센트 컬러만 조합해서 씁니다.
+   Gray is the foundation. Pick ONE (sometimes two) accent hues per surface
+   and let the grays do the rest of the work.
+   ========================================================================= */
+
+/* ---------- Fonts -------------------------------------------------------- */
+
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/Pretendard-Thin.otf") format("opentype");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/Pretendard-ExtraLight.otf") format("opentype");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/Pretendard-Light.otf") format("opentype");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/Pretendard-Regular.otf") format("opentype");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/Pretendard-Medium.otf") format("opentype");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/Pretendard-SemiBold.otf") format("opentype");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/Pretendard-Bold.otf") format("opentype");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/Pretendard-ExtraBold.otf") format("opentype");
+}
+@font-face {
+  font-family: "Pretendard";
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/Pretendard-Black.otf") format("opentype");
+}
+
+:root {
+  /* ====================================================================
+     OPEN COLOR PALETTE — raw scales (0 = lightest, 9 = darkest)
+     ==================================================================== */
+
+  /* Gray — the foundation */
+  --gray-0: #f8f9fa;
+  --gray-1: #f1f3f5;
+  --gray-2: #e9ecef;
+  --gray-3: #dee2e6;
+  --gray-4: #ced4da;
+  --gray-5: #adb5bd;
+  --gray-6: #868e96;
+  --gray-7: #495057;
+  --gray-8: #343a40;
+  --gray-9: #212529;
+
+  /* Red */
+  --red-0: #fff5f5;
+  --red-1: #ffe3e3;
+  --red-2: #ffc9c9;
+  --red-3: #ffa8a8;
+  --red-4: #ff8787;
+  --red-5: #ff6b6b;
+  --red-6: #fa5252;
+  --red-7: #f03e3e;
+  --red-8: #e03131;
+  --red-9: #c92a2a;
+
+  /* Pink */
+  --pink-0: #fff0f6;
+  --pink-1: #ffdeeb;
+  --pink-2: #fcc2d7;
+  --pink-3: #faa2c1;
+  --pink-4: #f783ac;
+  --pink-5: #f06595;
+  --pink-6: #e64980;
+  --pink-7: #d6336c;
+  --pink-8: #c2255c;
+  --pink-9: #a61e4d;
+
+  /* Grape */
+  --grape-0: #f8f0fc;
+  --grape-1: #f3d9fa;
+  --grape-2: #eebefa;
+  --grape-3: #e599f7;
+  --grape-4: #da77f2;
+  --grape-5: #cc5de8;
+  --grape-6: #be4bdb;
+  --grape-7: #ae3ec9;
+  --grape-8: #9c36b5;
+  --grape-9: #862e9c;
+
+  /* Violet */
+  --violet-0: #f3f0ff;
+  --violet-1: #e5dbff;
+  --violet-2: #d0bfff;
+  --violet-3: #b197fc;
+  --violet-4: #9775fa;
+  --violet-5: #845ef7;
+  --violet-6: #7950f2;
+  --violet-7: #7048e8;
+  --violet-8: #6741d9;
+  --violet-9: #5f3dc4;
+
+  /* Indigo */
+  --indigo-0: #edf2ff;
+  --indigo-1: #dbe4ff;
+  --indigo-2: #bac8ff;
+  --indigo-3: #91a7ff;
+  --indigo-4: #748ffc;
+  --indigo-5: #5c7cfa;
+  --indigo-6: #4c6ef5;
+  --indigo-7: #4263eb;
+  --indigo-8: #3b5bdb;
+  --indigo-9: #364fc7;
+
+  /* Blue */
+  --blue-0: #e7f5ff;
+  --blue-1: #d0ebff;
+  --blue-2: #a5d8ff;
+  --blue-3: #74c0fc;
+  --blue-4: #4dabf7;
+  --blue-5: #339af0;
+  --blue-6: #228be6;
+  --blue-7: #1c7ed6;
+  --blue-8: #1971c2;
+  --blue-9: #1864ab;
+
+  /* Cyan */
+  --cyan-0: #e3fafc;
+  --cyan-1: #c5f6fa;
+  --cyan-2: #99e9f2;
+  --cyan-3: #66d9e8;
+  --cyan-4: #3bc9db;
+  --cyan-5: #22b8cf;
+  --cyan-6: #15aabf;
+  --cyan-7: #1098ad;
+  --cyan-8: #0c8599;
+  --cyan-9: #0b7285;
+
+  /* Teal */
+  --teal-0: #e6fcf5;
+  --teal-1: #c3fae8;
+  --teal-2: #96f2d7;
+  --teal-3: #63e6be;
+  --teal-4: #38d9a9;
+  --teal-5: #20c997;
+  --teal-6: #12b886;
+  --teal-7: #0ca678;
+  --teal-8: #099268;
+  --teal-9: #087f5b;
+
+  /* Green */
+  --green-0: #ebfbee;
+  --green-1: #d3f9d8;
+  --green-2: #b2f2bb;
+  --green-3: #8ce99a;
+  --green-4: #69db7c;
+  --green-5: #51cf66;
+  --green-6: #40c057;
+  --green-7: #37b24d;
+  --green-8: #2f9e44;
+  --green-9: #2b8a3e;
+
+  /* Lime */
+  --lime-0: #f4fce3;
+  --lime-1: #e9fac8;
+  --lime-2: #d8f5a2;
+  --lime-3: #c0eb75;
+  --lime-4: #a9e34b;
+  --lime-5: #94d82d;
+  --lime-6: #82c91e;
+  --lime-7: #74b816;
+  --lime-8: #66a80f;
+  --lime-9: #5c940d;
+
+  /* Yellow */
+  --yellow-0: #fff9db;
+  --yellow-1: #fff3bf;
+  --yellow-2: #ffec99;
+  --yellow-3: #ffe066;
+  --yellow-4: #ffd43b;
+  --yellow-5: #fcc419;
+  --yellow-6: #fab005;
+  --yellow-7: #f59f00;
+  --yellow-8: #f08c00;
+  --yellow-9: #e67700;
+
+  /* Orange */
+  --orange-0: #fff4e6;
+  --orange-1: #ffe8cc;
+  --orange-2: #ffd8a8;
+  --orange-3: #ffc078;
+  --orange-4: #ffa94d;
+  --orange-5: #ff922b;
+  --orange-6: #fd7e14;
+  --orange-7: #f76707;
+  --orange-8: #e8590c;
+  --orange-9: #d9480f;
+
+  /* Pure utility */
+  --white: #ffffff;
+  --black: #000000;
+
+  /* ====================================================================
+     SEMANTIC TOKENS — Foreground / Background / Border
+     Gray-driven foundation. Override in product themes if needed.
+     ==================================================================== */
+
+  /* Backgrounds */
+  --bg:           var(--white);     /* page */
+  --bg-subtle:    var(--gray-0);    /* subtle elevated surfaces */
+  --bg-muted:     var(--gray-1);    /* hovered / pressed surfaces */
+  --bg-inset:     var(--gray-2);    /* inputs, code blocks */
+  --bg-inverse:   var(--gray-9);    /* dark on light */
+
+  /* Foregrounds */
+  --fg-1:         var(--gray-9);    /* primary text */
+  --fg-2:         var(--gray-8);    /* secondary text */
+  --fg-3:         var(--gray-7);    /* tertiary / labels */
+  --fg-4:         var(--gray-6);    /* placeholder / muted */
+  --fg-5:         var(--gray-5);    /* disabled */
+  --fg-on-accent: var(--white);     /* text on accent fills */
+  --fg-on-inverse: var(--gray-0);   /* text on dark surfaces */
+
+  /* Borders */
+  --border-1: var(--gray-2);   /* low-emphasis dividers */
+  --border-2: var(--gray-3);   /* default border */
+  --border-3: var(--gray-4);   /* hovered border */
+  --border-strong: var(--gray-7);
+
+  /* Accent — the single accent rule:
+     One product surface = one accent. Default is Blue.
+     Swap by overriding --accent-* on a theme class. */
+  --accent-50:  var(--blue-0);
+  --accent-100: var(--blue-1);
+  --accent-200: var(--blue-2);
+  --accent-300: var(--blue-3);
+  --accent-400: var(--blue-4);
+  --accent-500: var(--blue-5);
+  --accent-600: var(--blue-6);
+  --accent-700: var(--blue-7);
+  --accent-800: var(--blue-8);
+  --accent-900: var(--blue-9);
+  --accent: var(--accent-600);
+  --accent-hover: var(--accent-700);
+  --accent-press: var(--accent-800);
+  --accent-fg: var(--white);
+  --accent-soft-bg: var(--accent-50);
+  --accent-soft-fg: var(--accent-800);
+
+  /* Status — semantic, sparse. Use for system messaging, not decoration. */
+  --success: var(--teal-6);
+  --success-soft-bg: var(--teal-0);
+  --success-soft-fg: var(--teal-9);
+
+  --warning: var(--yellow-7);
+  --warning-soft-bg: var(--yellow-0);
+  --warning-soft-fg: var(--orange-9);
+
+  --danger: var(--red-6);
+  --danger-soft-bg: var(--red-0);
+  --danger-soft-fg: var(--red-9);
+
+  --info: var(--blue-6);
+  --info-soft-bg: var(--blue-0);
+  --info-soft-fg: var(--blue-9);
+
+  /* ====================================================================
+     SHADOW / RADIUS / SPACING
+     ==================================================================== */
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-pill: 999px;
+
+  /* Shadows are SOFT. We rely on borders + bg-subtle more than shadow. */
+  --shadow-xs: 0 1px 2px rgba(33, 37, 41, 0.04);
+  --shadow-sm: 0 1px 2px rgba(33, 37, 41, 0.04), 0 1px 1px rgba(33, 37, 41, 0.04);
+  --shadow-md: 0 4px 12px rgba(33, 37, 41, 0.06), 0 1px 2px rgba(33, 37, 41, 0.04);
+  --shadow-lg: 0 12px 32px rgba(33, 37, 41, 0.08), 0 2px 6px rgba(33, 37, 41, 0.04);
+  --shadow-xl: 0 24px 64px rgba(33, 37, 41, 0.12), 0 4px 12px rgba(33, 37, 41, 0.06);
+
+  /* Spacing — 4px base */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 120ms;
+  --dur-base: 180ms;
+  --dur-slow: 280ms;
+
+  /* ====================================================================
+     TYPOGRAPHY
+     ==================================================================== */
+
+  --font-sans: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Weights */
+  --weight-thin: 100;
+  --weight-extralight: 200;
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-extrabold: 800;
+  --weight-black: 900;
+
+  /* Sizes — modular scale, optimized for KR + Latin */
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-base: 15px;
+  --text-md: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 30px;
+  --text-4xl: 36px;
+  --text-5xl: 48px;
+  --text-6xl: 60px;
+  --text-7xl: 72px;
+  --text-display: 96px;
+
+  /* Line heights — Korean text reads tighter than English */
+  --leading-tight: 1.15;
+  --leading-snug: 1.3;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.7;
+
+  --tracking-tight: -0.02em;
+  --tracking-snug:  -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide:   0.02em;
+  --tracking-wider:  0.06em;
+}
+
+/* =========================================================================
+   Theme overrides — swap accent hue
+   Apply to <body> or any container.
+   ========================================================================= */
+
+.theme-grape   { --accent-50: var(--grape-0);  --accent-100: var(--grape-1);  --accent-200: var(--grape-2);  --accent-300: var(--grape-3);  --accent-400: var(--grape-4);  --accent-500: var(--grape-5);  --accent-600: var(--grape-6);  --accent-700: var(--grape-7);  --accent-800: var(--grape-8);  --accent-900: var(--grape-9);  --accent: var(--grape-6);  --accent-hover: var(--grape-7);  --accent-press: var(--grape-8);  --accent-soft-bg: var(--grape-0);  --accent-soft-fg: var(--grape-8); }
+.theme-teal    { --accent-50: var(--teal-0);   --accent-100: var(--teal-1);   --accent-200: var(--teal-2);   --accent-300: var(--teal-3);   --accent-400: var(--teal-4);   --accent-500: var(--teal-5);   --accent-600: var(--teal-6);   --accent-700: var(--teal-7);   --accent-800: var(--teal-8);   --accent-900: var(--teal-9);   --accent: var(--teal-6);   --accent-hover: var(--teal-7);   --accent-press: var(--teal-8);   --accent-soft-bg: var(--teal-0);   --accent-soft-fg: var(--teal-8); }
+.theme-orange  { --accent-50: var(--orange-0); --accent-100: var(--orange-1); --accent-200: var(--orange-2); --accent-300: var(--orange-3); --accent-400: var(--orange-4); --accent-500: var(--orange-5); --accent-600: var(--orange-6); --accent-700: var(--orange-7); --accent-800: var(--orange-8); --accent-900: var(--orange-9); --accent: var(--orange-6); --accent-hover: var(--orange-7); --accent-press: var(--orange-8); --accent-soft-bg: var(--orange-0); --accent-soft-fg: var(--orange-9); }
+.theme-pink    { --accent-50: var(--pink-0);   --accent-100: var(--pink-1);   --accent-200: var(--pink-2);   --accent-300: var(--pink-3);   --accent-400: var(--pink-4);   --accent-500: var(--pink-5);   --accent-600: var(--pink-6);   --accent-700: var(--pink-7);   --accent-800: var(--pink-8);   --accent-900: var(--pink-9);   --accent: var(--pink-6);   --accent-hover: var(--pink-7);   --accent-press: var(--pink-8);   --accent-soft-bg: var(--pink-0);   --accent-soft-fg: var(--pink-8); }
+.theme-violet  { --accent-50: var(--violet-0); --accent-100: var(--violet-1); --accent-200: var(--violet-2); --accent-300: var(--violet-3); --accent-400: var(--violet-4); --accent-500: var(--violet-5); --accent-600: var(--violet-6); --accent-700: var(--violet-7); --accent-800: var(--violet-8); --accent-900: var(--violet-9); --accent: var(--violet-6); --accent-hover: var(--violet-7); --accent-press: var(--violet-8); --accent-soft-bg: var(--violet-0); --accent-soft-fg: var(--violet-8); }
+.theme-lime    { --accent-50: var(--lime-0);   --accent-100: var(--lime-1);   --accent-200: var(--lime-2);   --accent-300: var(--lime-3);   --accent-400: var(--lime-4);   --accent-500: var(--lime-5);   --accent-600: var(--lime-6);   --accent-700: var(--lime-7);   --accent-800: var(--lime-8);   --accent-900: var(--lime-9);   --accent: var(--lime-7);   --accent-hover: var(--lime-8);   --accent-press: var(--lime-9);   --accent-soft-bg: var(--lime-0);   --accent-soft-fg: var(--lime-9); }
+
+/* Dark theme — gray-based, inversed */
+.theme-dark {
+  --bg: var(--gray-9);
+  --bg-subtle: var(--gray-8);
+  --bg-muted: #2c3137;
+  --bg-inset: var(--gray-8);
+  --bg-inverse: var(--gray-0);
+
+  --fg-1: var(--gray-0);
+  --fg-2: var(--gray-2);
+  --fg-3: var(--gray-4);
+  --fg-4: var(--gray-5);
+  --fg-5: var(--gray-6);
+  --fg-on-inverse: var(--gray-9);
+
+  --border-1: #2c3137;
+  --border-2: var(--gray-7);
+  --border-3: var(--gray-6);
+  --border-strong: var(--gray-4);
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.6);
+}
+
+/* Auto dark mode — follow OS preference unless body has .theme-light */
+@media (prefers-color-scheme: dark) {
+  :root:not(.theme-light) {
+    --bg: var(--gray-9);
+    --bg-subtle: var(--gray-8);
+    --bg-muted: #2c3137;
+    --bg-inset: var(--gray-8);
+    --bg-inverse: var(--gray-0);
+
+    --fg-1: var(--gray-0);
+    --fg-2: var(--gray-2);
+    --fg-3: var(--gray-4);
+    --fg-4: var(--gray-5);
+    --fg-5: var(--gray-6);
+    --fg-on-inverse: var(--gray-9);
+
+    --border-1: #2c3137;
+    --border-2: var(--gray-7);
+    --border-3: var(--gray-6);
+    --border-strong: var(--gray-4);
+
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* =========================================================================
+   SEMANTIC ELEMENT STYLES
+   These can be applied directly to elements or used as helper classes.
+   ========================================================================= */
+
+html, body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--fg-1);
+  background: var(--bg);
+  font-feature-settings: "ss01", "ss02", "tnum";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---- Display & Headings ---- */
+.display, h1.display {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-extrabold);
+  font-size: var(--text-display);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--fg-1);
+}
+h1, .h1 {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-5xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--fg-1);
+  margin: 0;
+}
+h2, .h2 {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-3xl);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-snug);
+  color: var(--fg-1);
+  margin: 0;
+}
+h3, .h3 {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-2xl);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-snug);
+  color: var(--fg-1);
+  margin: 0;
+}
+h4, .h4 {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-xl);
+  line-height: var(--leading-snug);
+  color: var(--fg-1);
+  margin: 0;
+}
+h5, .h5 {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-lg);
+  line-height: var(--leading-snug);
+  color: var(--fg-1);
+  margin: 0;
+}
+h6, .h6 {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-md);
+  line-height: var(--leading-snug);
+  color: var(--fg-1);
+  margin: 0;
+}
+
+/* ---- Body text ---- */
+p, .body {
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--fg-2);
+  margin: 0;
+}
+.body-lg { font-size: var(--text-lg); line-height: var(--leading-relaxed); color: var(--fg-2); }
+.body-sm { font-size: var(--text-sm); line-height: var(--leading-normal); color: var(--fg-3); }
+
+.eyebrow {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  color: var(--fg-4);
+}
+.label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--fg-2);
+}
+.caption {
+  font-size: var(--text-xs);
+  color: var(--fg-4);
+}
+
+/* ---- Mono / code ---- */
+code, kbd, pre, .mono {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+code {
+  background: var(--bg-inset);
+  padding: 0.12em 0.4em;
+  border-radius: var(--radius-xs);
+  color: var(--fg-1);
+}
+
+/* ---- Links ---- */
+a {
+  color: var(--accent-700);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+a:hover { color: var(--accent-800); text-decoration: underline; text-underline-offset: 2px; }
+a:focus-visible {
+  outline: 2px solid var(--accent-400);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ---- Selection ---- */
+::selection { background: var(--accent-200); color: var(--accent-900); }

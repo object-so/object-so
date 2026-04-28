@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Static checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate JSON-LD blocks
+        run: |
+          set -e
+          for f in $(find . -name '*.html' -not -path './_site/*' -not -path './node_modules/*'); do
+            python3 - "$f" <<'PY'
+          import re, json, sys
+          path = sys.argv[1]
+          s = open(path).read()
+          for m in re.finditer(r'<script type="application/ld\+json">\s*(\{.*?\})\s*</script>', s, re.S):
+              try:
+                  json.loads(m.group(1))
+              except Exception as e:
+                  print(f"INVALID JSON-LD in {path}: {e}")
+                  sys.exit(1)
+          print(f"OK {path}")
+          PY
+          done
+
+      - name: Validate sitemap.xml
+        run: |
+          python3 -c "
+          import xml.etree.ElementTree as ET
+          t = ET.parse('sitemap.xml')
+          ns = '{http://www.sitemaps.org/schemas/sitemap/0.9}'
+          urls = t.getroot().findall(ns + 'url')
+          assert urls, 'sitemap has no <url> entries'
+          print(f'sitemap.xml OK — {len(urls)} URL entries')
+          "
+
+      - name: hreflang/canonical/sitemap consistency
+        run: python3 scripts/check-hreflang.py
+
+      - name: Install Eleventy and build
+        run: |
+          npm ci || npm install
+          npm run build
+
+      - name: html-proofer (link & accessibility checks)
+        uses: chabad360/htmlproofer@master
+        with:
+          directory: ./_site
+          arguments: |
+            --check-html
+            --check-favicon
+            --enforce-https
+            --no-check-external-hash
+            --ignore-urls "/^http:\/\/localhost/,/^https:\/\/object\.so\//"
+            --ignore-status-codes "429,403,999"
+            --typhoeus '{"connecttimeout": 10, "timeout": 30}'
