@@ -1,0 +1,56 @@
+// Language-specific shared strings. Keyed by lang code (ko / en).
+// Page-specific copy (titles, body) lives in front matter, not here.
+export default {
+  ko: {
+    locale: "ko_KR",
+    altLocale: "en_US",
+    siteName: "오브젝트",
+    skipLink: "본문 바로가기",
+    nav: {
+      ariaLabel: "주 메뉴",
+      brandAriaLabel: "Object — 홈",
+      home: "홈",
+      about: "소개",
+      contact: "문의",
+      langAriaLabel: "언어 선택",
+    },
+    footer: {
+      ariaLabel: "사이트 정보",
+      bizName:    { k: "상호",          v: "오브젝트" },
+      ceo:        { k: "대표",          v: "진재명" },
+      address:    { k: "주소",          v: "부산광역시 북구 상리로 86" },
+      email:      { k: "이메일" },
+      bizReg:     { k: "사업자등록번호", verify: "사업자정보 확인 ↗" },
+      mailOrder:  { k: "통신판매업신고", v: "2019-부산북구-0492" },
+      copyright: "Object. All rights reserved.",
+      privacyLink: "개인정보처리방침",
+      langAriaLabel: "언어 선택",
+    },
+  },
+  en: {
+    locale: "en_US",
+    altLocale: "ko_KR",
+    siteName: "Object",
+    skipLink: "Skip to main content",
+    nav: {
+      ariaLabel: "Main menu",
+      brandAriaLabel: "Object — Home",
+      home: "Home",
+      about: "About",
+      contact: "Contact",
+      langAriaLabel: "Language",
+    },
+    footer: {
+      ariaLabel: "Site info",
+      bizName:    { k: "Company",       v: "Object" },
+      ceo:        { k: "CEO",           v: "Jaemyeong Jin" },
+      address:    { k: "Address",       v: "86 Sangni-ro, Buk-gu, Busan, Korea" },
+      email:      { k: "Email" },
+      bizReg:     { k: "Business Reg.", verify: "Verify ↗" },
+      mailOrder:  { k: "Mail-Order",    v: "2019-부산북구-0492" },
+      copyright: "Object. All rights reserved.",
+      privacyLink: "Privacy Policy",
+      langAriaLabel: "Language",
+    },
+  },
+};

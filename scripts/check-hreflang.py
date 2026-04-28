@@ -2,6 +2,8 @@
 """
 hreflang/canonical/sitemap consistency checker.
 
+Reads from the Eleventy build output (_site/), so `npm run build` must run first.
+
 Run via:  npm run check:hreflang   (or)   python3 scripts/check-hreflang.py
 
 Exits non-zero if any of the following fail:
@@ -18,7 +20,10 @@ import re
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent / "_site"
+if not ROOT.exists():
+    print(f"FAIL — build output not found at {ROOT}. Run `npm run build` first.")
+    sys.exit(2)
 PAGES = [
     "ko/index.html", "ko/about.html", "ko/contact.html", "ko/privacy.html",
     "en/index.html", "en/about.html", "en/contact.html", "en/privacy.html",

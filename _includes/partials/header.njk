@@ -1,0 +1,19 @@
+{%- set t = i18n[lang] -%}
+  <!-- BEGIN HEADER -->
+  <nav class="nav" aria-label="{{ t.nav.ariaLabel }}">
+    <div class="nav-inner">
+      <a href="index.html" class="brand" aria-label="{{ t.nav.brandAriaLabel }}">
+        <span class="mark" aria-hidden="true"></span>
+        <span>Object<span class="dot" aria-hidden="true">.</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html"{% if activeNav == "home" %} class="active" aria-current="page"{% endif %}>{{ t.nav.home }}</a>
+        <a href="about.html"{% if activeNav == "about" %} class="active" aria-current="page"{% endif %}>{{ t.nav.about }}</a>
+        <a href="contact.html"{% if activeNav == "contact" %} class="active" aria-current="page"{% endif %}>{{ t.nav.contact }}</a>
+      </div>
+      <div class="lang" aria-label="{{ t.nav.langAriaLabel }}">
+        {% if lang == "ko" %}<span class="on" aria-current="true">KO</span><span class="sep" aria-hidden="true">|</span><a href="../en/{{ slug }}.html" hreflang="en">EN</a>{% else %}<a href="../ko/{{ slug }}.html" hreflang="ko">KO</a><span class="sep" aria-hidden="true">|</span><span class="on" aria-current="true">EN</span>{% endif %}
+      </div>
+    </div>
+  </nav>
+  <!-- END HEADER -->

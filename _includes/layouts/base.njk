@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+{%- include "partials/head-meta.njk" %}
+{%- if includeJsonLd %}
+
+{% include includeJsonLd %}
+{%- endif %}
+</head>
+<body>
+
+  <a class="skip-link" href="#main">{{ i18n[lang].skipLink }}</a>
+
+{% include "partials/header.njk" %}
+
+{{ content | safe -}}
+
+{% include "partials/footer.njk" %}
+
+  <script>
+    document.querySelectorAll('[data-year]').forEach(function (el) {
+      el.textContent = new Date().getFullYear();
+    });
+  </script>
+</body>
+</html>

@@ -24,10 +24,15 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Install Eleventy and build
+        run: |
+          npm ci || npm install
+          npm run build
+
       - name: Validate JSON-LD blocks
         run: |
           set -e
-          for f in $(find . -name '*.html' -not -path './_site/*' -not -path './node_modules/*'); do
+          for f in $(find ./_site -name '*.html'); do
             python3 - "$f" <<'PY'
           import re, json, sys
           path = sys.argv[1]
@@ -46,7 +51,7 @@ jobs:
         run: |
           python3 -c "
           import xml.etree.ElementTree as ET
-          t = ET.parse('sitemap.xml')
+          t = ET.parse('_site/sitemap.xml')
           ns = '{http://www.sitemaps.org/schemas/sitemap/0.9}'
           urls = t.getroot().findall(ns + 'url')
           assert urls, 'sitemap has no <url> entries'
@@ -55,11 +60,6 @@ jobs:
 
       - name: hreflang/canonical/sitemap consistency
         run: python3 scripts/check-hreflang.py
-
-      - name: Install Eleventy and build
-        run: |
-          npm ci || npm install
-          npm run build
 
       - name: html-proofer (internal links + favicon)
         uses: chabad360/htmlproofer@master

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ description }}" />
+  <meta name="robots" content="noindex" />
+
+  <link rel="canonical" href="{{ site.baseUrl }}/ko/index.html" />
+  <link rel="alternate" hreflang="ko" href="{{ site.baseUrl }}/ko/index.html" />
+  <link rel="alternate" hreflang="en" href="{{ site.baseUrl }}/en/index.html" />
+  <link rel="alternate" hreflang="x-default" href="{{ site.baseUrl }}/ko/index.html" />
+
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png" />
+
+  <!-- Fallback for environments where JS is disabled: default to KO. -->
+  <meta http-equiv="refresh" content="0; url=/ko/index.html" />
+
+  <link rel="preload" href="/assets/fonts/Pretendard-Regular.otf" as="font" type="font/otf" crossorigin />
+  <link rel="preload" href="/assets/fonts/Pretendard-ExtraBold.otf" as="font" type="font/otf" crossorigin />
+
+  <link rel="stylesheet" href="/assets/css/tokens.css" />
+  <style>
+    .root-redirect {
+      min-height: 100vh; display: grid; place-items: center;
+      padding: 40px 24px; text-align: center;
+    }
+    .root-redirect h1 {
+      font-size: 18px; font-weight: 600;
+      letter-spacing: -0.01em; margin: 0 0 16px;
+      color: var(--fg-1);
+    }
+    .root-redirect p { font-size: 14px; color: var(--fg-3); margin: 0 0 24px; }
+    .root-redirect .links { display: inline-flex; gap: 12px; }
+    .root-redirect .links a {
+      padding: 10px 16px; border-radius: var(--radius-sm);
+      background: var(--bg-inverse); color: var(--fg-on-inverse);
+      font-size: 14px; font-weight: 500;
+      text-decoration: none;
+    }
+    .root-redirect .links a.secondary {
+      background: transparent; color: var(--fg-1);
+      border: 1px solid var(--border-2);
+    }
+    .root-redirect .links a:focus-visible {
+      outline: 2px solid var(--accent-400); outline-offset: 2px;
+    }
+  </style>
+
+  <script>
+    (function () {
+      try {
+        var lang = ((navigator.languages && navigator.languages[0]) || navigator.language || navigator.userLanguage || 'ko').toLowerCase();
+        var target = lang.indexOf('ko') === 0 ? '/ko/index.html' : '/en/index.html';
+        location.replace(target);
+      } catch (_) {
+        location.replace('/ko/index.html');
+      }
+    })();
+  </script>
+</head>
+<body>
+{{ content | safe }}
+</body>
+</html>

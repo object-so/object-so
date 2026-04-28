@@ -1,9 +1,8 @@
-// Eleventy config — opt-in build path. The committed .html files in
-// /, ko/, en/ remain the canonical source for now. This config:
-//   1) passes existing HTML/asset files through to _site/ unchanged
-//   2) renders /content/legal/*.md with a layout to produce
-//      _site/{ko,en}/privacy.html — verifying the markdown ↔ HTML parity
-//      so the markdown can become the single source of truth in a follow-up.
+// Eleventy config — production build path.
+//   1) passes static assets / robots / sitemap / app-ads through to _site/
+//   2) renders index.html and ko|en/*.html as Nunjucks templates with a
+//      shared layout (_includes/layouts/base.njk + redirect.njk) and
+//      _data/{site,i18n}.js for site-wide variables.
 //
 // Usage:
 //   npm install
@@ -14,14 +13,11 @@ import markdownIt from "markdown-it";
 import markdownItAttrs from "markdown-it-attrs";
 
 export default function (eleventyConfig) {
-  // Pass-through: copy existing static assets and HTML pages verbatim.
+  // Pass-through: copy existing static assets and root-level files.
   eleventyConfig.addPassthroughCopy("assets");
   eleventyConfig.addPassthroughCopy("robots.txt");
   eleventyConfig.addPassthroughCopy("sitemap.xml");
   eleventyConfig.addPassthroughCopy("app-ads.txt");
-  eleventyConfig.addPassthroughCopy({ "index.html": "index.html" });
-  eleventyConfig.addPassthroughCopy({ "ko/*.html": "ko" });
-  eleventyConfig.addPassthroughCopy({ "en/*.html": "en" });
 
   // Watch CSS for live-reload during dev.
   eleventyConfig.addWatchTarget("assets/css/");
@@ -49,10 +45,8 @@ export default function (eleventyConfig) {
     },
     htmlTemplateEngine: "njk",
     markdownTemplateEngine: "njk",
-    // *.html 은 passthrough copy로만 처리 (templateFormats에 html 미포함)
-    // → permalink 변환 없이 _site에 그대로 복사. 내부 상대 링크 보존.
-    templateFormats: ["md", "njk"],
-    // Don't process node_modules, content/, _site/, docs/, scripts/.
-    // (content/legal/*.md will be wired up via _includes layout in a follow-up.)
+    // html files (index, ko/*, en/*) are now Nunjucks templates with
+    // explicit `permalink` in front matter so output paths stay stable.
+    templateFormats: ["html", "md", "njk"],
   };
 }
