@@ -87,7 +87,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .lang {
   margin-left: 12px; padding-left: 16px;
   border-left: 1px solid var(--border-2);
-  display: flex; gap: 6px;
+  display: flex; align-items: center; gap: 6px;
   font-size: 13px; font-weight: 500;
   color: var(--fg-4);
   letter-spacing: 0.04em;
@@ -95,7 +95,16 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .lang a, .lang .on { color: var(--fg-4); padding: 4px; }
 .lang .on { color: var(--fg-1); }
 .lang a:hover { color: var(--fg-1); text-decoration: none; }
-.lang .sep { color: var(--border-3); }
+/* Pretendard에서 `|` 문자가 baseline 위쪽으로 그려져 정렬이 어긋나는 이슈 회피.
+   글자는 숨기고 1px vertical bar로 직접 그려 flex 수직 중앙 정렬. */
+.lang .sep {
+  display: inline-block;
+  width: 1px;
+  height: 12px;
+  background: var(--border-3);
+  font-size: 0;
+  line-height: 0;
+}
 
 @media (max-width: 600px) {
   .nav-links a { padding: 6px 10px; font-size: 13px; }
@@ -354,8 +363,16 @@ footer.foot {
 .foot-bar .links { display: flex; gap: 20px; }
 .foot-bar .links a { color: var(--fg-3); }
 .foot-bar .links a:hover { color: var(--fg-1); text-decoration: none; }
-.foot-bar .lang-pair { display: flex; gap: 8px; }
+.foot-bar .lang-pair { display: flex; align-items: center; gap: 8px; }
 .foot-bar .lang-pair a, .foot-bar .lang-pair .on { color: var(--fg-4); }
 .foot-bar .lang-pair .on { color: var(--fg-1); font-weight: 500; }
 .foot-bar .lang-pair a:hover { color: var(--fg-1); text-decoration: none; }
-.foot-bar .lang-pair .sep { color: var(--border-3); }
+/* 헤더와 동일한 1px vertical bar 패턴. */
+.foot-bar .lang-pair .sep {
+  display: inline-block;
+  width: 1px;
+  height: 11px;
+  background: var(--border-3);
+  font-size: 0;
+  line-height: 0;
+}
