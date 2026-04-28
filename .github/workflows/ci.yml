@@ -61,14 +61,15 @@ jobs:
           npm ci || npm install
           npm run build
 
-      - name: html-proofer (link & favicon checks)
+      - name: html-proofer (internal links + favicon)
         uses: chabad360/htmlproofer@master
         with:
           directory: ./_site
+          # 외부 링크는 GitHub runner에서 정부 사이트(ftc.go.kr 등) 접근이
+          # 자주 timeout 되므로 disable-external. 외부 링크 health check는
+          # 별도 schedule cron으로 분리 운영 (계획 P7-21).
           arguments: |
             --checks Links,Images,Scripts,Favicon
+            --disable-external
             --enforce-https
             --ignore-urls "/^http:\/\/localhost/,/^https:\/\/object\.so\//"
-            --ignore-status-codes "429,403,999"
-            --typhoeus '{"connecttimeout":10,"timeout":30}'
-            --hydra '{"max_concurrency":5}'
