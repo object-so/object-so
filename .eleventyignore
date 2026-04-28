@@ -1,0 +1,13 @@
+# 마크다운 source-of-truth는 빌드 대상이 아닙니다 (HTML이 canonical 출력).
+README.md
+docs/
+content/
+
+# 빌드 산출물 / 의존성
+_site/
+node_modules/
+
+# Git/IDE
+.git/
+.github/
+.serena/
