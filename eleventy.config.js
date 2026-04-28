@@ -49,7 +49,9 @@ export default function (eleventyConfig) {
     },
     htmlTemplateEngine: "njk",
     markdownTemplateEngine: "njk",
-    templateFormats: ["md", "njk", "html"],
+    // *.html 은 passthrough copy로만 처리 (templateFormats에 html 미포함)
+    // → permalink 변환 없이 _site에 그대로 복사. 내부 상대 링크 보존.
+    templateFormats: ["md", "njk"],
     // Don't process node_modules, content/, _site/, docs/, scripts/.
     // (content/legal/*.md will be wired up via _includes layout in a follow-up.)
   };
