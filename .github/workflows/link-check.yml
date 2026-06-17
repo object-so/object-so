@@ -1,0 +1,61 @@
+name: Link check (external)
+
+# 외부 링크 헬스체크 (계획 P7-21).
+# PR CI(ci.yml)는 정부 사이트(ftc.go.kr 등)의 잦은 timeout으로 외부 링크 검사를
+# --disable-external 로 끄고 PR을 막지 않는다. 이 워크플로는 그 외부 링크
+# (ftc.go.kr, policies.google.com, adssettings.google.com 등)를 저빈도 스케줄로
+# 실제 검사하고, 깨지면 GitHub 이슈로 알린다. 서버 불필요 — GitHub 호스티드 러너에서만 동작.
+
+on:
+  schedule:
+    - cron: '0 0 * * 1'   # 매주 월요일 00:00 UTC = 09:00 KST
+  workflow_dispatch:        # 수동 실행
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  link-check:
+    name: External link health check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Build
+        run: |
+          npm ci || npm install
+          npm run build
+
+      # ci.yml 과 동일하되 --disable-external 을 빼서 외부 링크를 실제로 검사한다.
+      # object.so 자기참조 절대 URL(canonical/hreflang/sitemap)은 내부 검사로 커버되므로
+      # 여기서는 ignore (외부 도메인만 네트워크 확인). 네이버 소유확인 토큰 파일은 제외.
+      - name: html-proofer (external links)
+        uses: chabad360/htmlproofer@v2
+        with:
+          directory: ./_site
+          arguments: |
+            --checks Links,Images,Scripts,Favicon
+            --enforce-https
+            --ignore-urls "/^http:\/\/localhost/,/^https:\/\/object\.so\//"
+            --ignore-files "/naver[0-9a-f]+\.html$/"
+
+      - name: Open issue on failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh label create link-check --color B60205 --description "Broken external link (scheduled check)" 2>/dev/null || true
+          existing=$(gh issue list --label link-check --state open --json number --jq '.[0].number // empty')
+          body=$(printf '스케줄 외부 링크 점검에서 깨진 링크 또는 접속 실패가 발견됐습니다.\n\n실행 로그: %s\n\n일시적 timeout일 수 있으니 로그를 확인하세요. 정상화되면 이 이슈를 닫아 주세요.' "$RUN_URL")
+          if [ -z "$existing" ]; then
+            gh issue create --label link-check --title "🔗 외부 링크 점검 실패" --body "$body"
+          else
+            gh issue comment "$existing" --body "$(printf '추가 실패 발생 — 로그: %s' "$RUN_URL")"
+          fi
