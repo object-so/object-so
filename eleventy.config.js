@@ -18,6 +18,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("assets");
   eleventyConfig.addPassthroughCopy("robots.txt");
   eleventyConfig.addPassthroughCopy("app-ads.txt");
+  eleventyConfig.addPassthroughCopy("llms.txt");
 
   // Watch CSS for live-reload during dev.
   eleventyConfig.addWatchTarget("assets/css/");

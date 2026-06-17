@@ -15,68 +15,16 @@
 
 /* ---------- Fonts -------------------------------------------------------- */
 
+/* Single variable web font (woff2) — Pretendard Std, all weights 45–920 in
+   one ~285KB request. Replaces the previous 9 static OTFs (~14MB total) for a
+   large LCP/CWV win. The design system (prototype) uses the "Pretendard Std"
+   family name. */
 @font-face {
-  font-family: "Pretendard";
-  font-weight: 100;
+  font-family: "Pretendard Std";
+  font-weight: 45 920;
   font-style: normal;
   font-display: swap;
-  src: url("../fonts/Pretendard-Thin.otf") format("opentype");
-}
-@font-face {
-  font-family: "Pretendard";
-  font-weight: 200;
-  font-style: normal;
-  font-display: swap;
-  src: url("../fonts/Pretendard-ExtraLight.otf") format("opentype");
-}
-@font-face {
-  font-family: "Pretendard";
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-  src: url("../fonts/Pretendard-Light.otf") format("opentype");
-}
-@font-face {
-  font-family: "Pretendard";
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-  src: url("../fonts/Pretendard-Regular.otf") format("opentype");
-}
-@font-face {
-  font-family: "Pretendard";
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-  src: url("../fonts/Pretendard-Medium.otf") format("opentype");
-}
-@font-face {
-  font-family: "Pretendard";
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-  src: url("../fonts/Pretendard-SemiBold.otf") format("opentype");
-}
-@font-face {
-  font-family: "Pretendard";
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-  src: url("../fonts/Pretendard-Bold.otf") format("opentype");
-}
-@font-face {
-  font-family: "Pretendard";
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-  src: url("../fonts/Pretendard-ExtraBold.otf") format("opentype");
-}
-@font-face {
-  font-family: "Pretendard";
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-  src: url("../fonts/Pretendard-Black.otf") format("opentype");
+  src: url("../fonts/PretendardStdVariable.woff2") format("woff2");
 }
 
 :root {
@@ -353,7 +301,7 @@
      TYPOGRAPHY
      ==================================================================== */
 
-  --font-sans: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", Roboto, sans-serif;
+  --font-sans: "Pretendard Std", "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
   /* Weights */
@@ -393,6 +341,61 @@
   --tracking-normal: 0;
   --tracking-wide:   0.02em;
   --tracking-wider:  0.06em;
+
+  /* ====================================================================
+     DESIGN-SYSTEM BRIDGE
+     Maps the redesign prototype's semantic vocabulary onto the Open Color
+     scales above (no new colors). Reference these in the redesigned home
+     and restyled pages. Conflicting names (type scale, border-strong) are
+     given a --ds-*/--border-emphasis namespace so the legacy --text-*/
+     --border-strong used by privacy/about/contact are untouched.
+     ==================================================================== */
+
+  /* Open Color raw aliases (prototype uses an --oc- prefix) */
+  --oc-gray-0: var(--gray-0); --oc-gray-1: var(--gray-1); --oc-gray-2: var(--gray-2);
+  --oc-gray-3: var(--gray-3); --oc-gray-4: var(--gray-4); --oc-gray-5: var(--gray-5);
+  --oc-gray-6: var(--gray-6); --oc-gray-7: var(--gray-7); --oc-gray-8: var(--gray-8); --oc-gray-9: var(--gray-9);
+  --oc-blue-0: var(--blue-0); --oc-blue-1: var(--blue-1); --oc-blue-2: var(--blue-2);
+  --oc-blue-7: var(--blue-7); --oc-blue-8: var(--blue-8); --oc-blue-9: var(--blue-9);
+
+  /* Brand */
+  --brand-accent:       var(--blue-8);   /* dot accent + accent-button fills — blue-8 so white-on-accent text clears WCAG AA 4.5:1 */
+  --brand-accent-hover: var(--blue-9);
+  --brand-ink:          var(--gray-9);   /* wordmark */
+
+  /* Text hierarchy */
+  --text-strong:    var(--gray-9);
+  --text-body:      var(--gray-7);
+  --text-secondary: var(--gray-6);
+  --text-muted:     var(--gray-5);
+  --text-on-accent: var(--white);
+  --text-on-dark:   var(--white);
+  --text-link:      var(--blue-8);
+
+  /* Surfaces */
+  --surface-page:    var(--white);
+  --surface-subtle:  var(--gray-0);
+  --surface-card:    var(--white);
+  --surface-inverse: var(--gray-9);   /* dark contact band */
+
+  /* Borders */
+  --border-subtle:   var(--gray-2);
+  --border-default:  var(--gray-3);
+  --border-emphasis: var(--gray-4);   /* prototype hairline (lighter than legacy --border-strong = gray-7) */
+
+  /* Design-system role type scale (prototype px values, namespaced) */
+  --ds-text-eyebrow: 13px;
+  --ds-text-sm:      14px;
+  --ds-text-base:    16px;
+  --ds-text-md:      18px;
+  --ds-text-lg:      20px;
+  --ds-text-xl:      24px;
+  --ds-text-2xl:     30px;
+  --ds-text-3xl:     38px;
+  --tracking-tighter: -0.045em;        /* large display / hero */
+
+  /* Radii */
+  --radius-button: 12px;
 }
 
 /* =========================================================================
@@ -434,34 +437,9 @@
   --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.6);
 }
 
-/* Auto dark mode — follow OS preference unless body has .theme-light */
-@media (prefers-color-scheme: dark) {
-  :root:not(.theme-light) {
-    --bg: var(--gray-9);
-    --bg-subtle: var(--gray-8);
-    --bg-muted: #2c3137;
-    --bg-inset: var(--gray-8);
-    --bg-inverse: var(--gray-0);
-
-    --fg-1: var(--gray-0);
-    --fg-2: var(--gray-2);
-    --fg-3: var(--gray-4);
-    --fg-4: var(--gray-5);
-    --fg-5: var(--gray-6);
-    --fg-on-inverse: var(--gray-9);
-
-    --border-1: #2c3137;
-    --border-2: var(--gray-7);
-    --border-3: var(--gray-6);
-    --border-strong: var(--gray-4);
-
-    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.5);
-    --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.6);
-  }
-}
+/* Auto dark mode intentionally disabled — the redesign is light-only with a
+   single dark contact band (see .contact-band in site.css). The opt-in
+   .theme-dark class above remains available but is not applied anywhere. */
 
 /* =========================================================================
    SEMANTIC ELEMENT STYLES

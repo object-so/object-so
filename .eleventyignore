@@ -7,6 +7,10 @@ docs/
 _site/
 node_modules/
 
+# 도구 생성 아티팩트 (프로덕션 빌드에서 제외)
+graphify-out/
+.codegraph/
+
 # Git/IDE
 .git/
 .github/

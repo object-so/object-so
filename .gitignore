@@ -28,3 +28,7 @@ Thumbs.db
 .serena/
 .playwright-mcp/
 AGENTS.md
+
+# Knowledge-graph / code-index tooling (generated, not deployed)
+graphify-out/
+.codegraph/

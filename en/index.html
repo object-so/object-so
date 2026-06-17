@@ -4,19 +4,85 @@ permalink: /en/index.html
 lang: en
 slug: index
 activeNav: home
-title: "Object — One purpose. One object."
-description: "We build apps that do one thing — and do it properly. Not more features. A better single one."
-ogDescription: "We build apps that do one thing — and do it properly."
-includeJsonLd: partials/jsonld-en-org.njk
+title: "Object — One purpose, one app."
+description: "Object builds apps and services that do one thing, deeply. Not more features — a better single one."
+ogDescription: "Object builds apps and services that do one thing, deeply."
 ---
-  <main class="page" id="main" tabindex="-1">
-    <div class="wrap">
-      <h1 class="display">One purpose.<br/>One object<span class="accent" aria-hidden="true">.</span></h1>
-      <p class="lede">We build apps that do one thing — and do it properly.</p>
-      <p class="body">Not more features. A better single one.</p>
-      <div class="cta-row">
-        <a href="contact.html" class="btn">Get in touch <span class="arrow" aria-hidden="true">→</span></a>
-        <a href="about.html" class="btn btn-secondary">About us</a>
+{%- set t = i18n[lang] -%}
+  <main id="main" tabindex="-1">
+
+    <!-- HERO -->
+    <section id="top" class="site-hero">
+      <div class="shell">
+        <p class="kicker"><span>Software Studio · Busan</span></p>
+        <h1 class="hero-title">One purpose,<br/>one app<span class="accent" aria-hidden="true">.</span></h1>
+        <p class="hero-lede">Object builds apps and services that do one thing, deeply.</p>
+        <p class="hero-sub">Not more features — a better single one.</p>
+        <div class="cta-row">
+          <a href="#contact" class="btn">Get in touch <span class="arrow" aria-hidden="true">→</span></a>
+          <a href="about.html" class="btn btn-secondary">About us</a>
+        </div>
       </div>
-    </div>
+    </section>
+
+    <!-- ABOUT / VISION (summary — full content on about.html) -->
+    <section id="about" class="section">
+      <div class="shell section-inner section-split">
+        <div>
+          <p class="kicker"><span>Vision · Philosophy</span></p>
+          <h2 class="section-title">A better single thing<span class="accent" aria-hidden="true">.</span></h2>
+        </div>
+        <div>
+          <p class="section-lead">Between super-apps and hyper-casual, Object builds tools designed for one clear purpose — apps that stay useful long after the trend is gone.</p>
+          <p class="section-actions"><a class="text-link" href="about.html">Read more about us <span aria-hidden="true">→</span></a></p>
+          <blockquote class="vision-quote">
+            <p>Not more features —<br/>a better single one<span class="accent" aria-hidden="true">.</span></p>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- VALUES -->
+    <section id="values" class="section section--subtle">
+      <div class="shell section-inner">
+        <p class="kicker"><span>Values</span></p>
+        <h2 class="section-title">Three things we hold to<span class="accent" aria-hidden="true">.</span></h2>
+        <div class="values-grid">
+          {%- for v in values[lang] %}
+          <div class="value-card">
+            <div class="value-num">{{ v.num }}<span class="accent" aria-hidden="true">.</span></div>
+            <h3>{{ v.title }}</h3>
+            <p>{{ v.teaser }}</p>
+          </div>
+          {%- endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPANY -->
+    <section id="company" class="section">
+      <div class="shell section-inner section-split">
+        <div>
+          <p class="kicker"><span>Company</span></p>
+          <h2 class="section-title">Company info<span class="accent" aria-hidden="true">.</span></h2>
+        </div>
+        <dl class="company-dl">
+          <div class="row"><dt>{{ t.footer.bizName.k }}</dt><dd>{{ t.footer.bizName.v }}</dd></div>
+          <div class="row"><dt>{{ t.footer.ceo.k }}</dt><dd>{{ t.footer.ceo.v }}</dd></div>
+          <div class="row"><dt>{{ t.founded.k }}</dt><dd>{{ t.founded.v }}</dd></div>
+          <div class="row"><dt>{{ t.nav.contact }}</dt><dd><a href="mailto:{{ site.email }}">{{ site.email }}</a></dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- CONTACT (dark band) -->
+    <section id="contact" class="section section--inverse contact-band">
+      <div class="shell section-inner">
+        <p class="kicker"><span>Contact</span></p>
+        <h2 class="contact-title">Got something to build together?</h2>
+        <p class="contact-sub">For collaborations, partnerships, and inquiries, reach out by email.<br/>We reply within 1–2 business days.</p>
+        <a class="contact-email" href="mailto:{{ site.email }}">{{ site.email }} <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
   </main>

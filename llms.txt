@@ -1,0 +1,26 @@
+# Object (오브젝트)
+
+> 부산 기반의 작은 소프트웨어 공방. 단 하나의 목적을 깊이 있게 해내는 앱과 서비스를 만듭니다. A small software studio in Busan, Korea — building single-purpose apps and services. Better at one thing, not more features.
+
+Object(오브젝트)는 모든 것을 담으려는 슈퍼앱이나 잠시 쓰이고 잊히는 하이퍼캐주얼이 아니라, 하나의 분명한 목적을 위해 설계된 도구를 만듭니다. 정적 HTML 기업 홈페이지이며 한국어(ko)와 영어(en)를 제공합니다. 법적 기준은 한국어판이 우선합니다.
+
+## Pages — 한국어 (Korean)
+- [홈 / Home](https://object.so/ko/index.html): 회사 소개와 철학, 핵심 가치, 회사 정보, 문의 안내
+- [소개 / About](https://object.so/ko/about.html): 비전·철학, 세 가지 가치(집중·장인정신·단순함), 회사 정보
+- [문의 / Contact](https://object.so/ko/contact.html): 협업·제휴·문의 이메일 안내
+- [개인정보처리방침 / Privacy Policy](https://object.so/ko/privacy.html): 웹사이트·모바일 앱 공통 개인정보 처리방침
+
+## Pages — English
+- [Home](https://object.so/en/index.html): Company introduction, philosophy, core values, company info, contact
+- [About](https://object.so/en/about.html): Vision, philosophy, three values (Focus, Craft, Simplicity), company info
+- [Contact](https://object.so/en/contact.html): Email for collaboration, partnership, and inquiries
+- [Privacy Policy](https://object.so/en/privacy.html): Privacy policy for the website and mobile apps (Korean version prevails)
+
+## Company facts
+- 상호 / Company: 오브젝트 (Object)
+- 대표 / Founder: 진재명 (Jaemyeong Jin)
+- 설립 / Founded: 2019-11-11
+- 주소 / Address: 부산광역시 북구 상리로 86 (86 Sangni-ro, Buk-gu, Busan, Korea)
+- 이메일 / Email: contact@object.so
+- 사업자등록번호 / Business Registration No.: 113-59-00420
+- 통신판매업신고 / Mail-Order License: 2019-부산북구-0492
