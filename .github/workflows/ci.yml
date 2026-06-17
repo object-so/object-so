@@ -73,3 +73,4 @@ jobs:
             --disable-external
             --enforce-https
             --ignore-urls "/^http:\/\/localhost/,/^https:\/\/object\.so\//"
+            --ignore-files "/naver[0-9a-f]+\.html$/"
