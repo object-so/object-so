@@ -12,17 +12,17 @@ jobs:
     name: Static checks
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install Eleventy and build
         run: |
@@ -62,7 +62,7 @@ jobs:
         run: python3 scripts/check-hreflang.py
 
       - name: html-proofer (internal links + favicon)
-        uses: chabad360/htmlproofer@master
+        uses: chabad360/htmlproofer@v2
         with:
           directory: ./_site
           # 외부 링크는 GitHub runner에서 정부 사이트(ftc.go.kr 등) 접근이
