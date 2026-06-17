@@ -7,16 +7,82 @@ activeNav: home
 title: "오브젝트 — 하나의 목적, 하나의 앱."
 description: "오브젝트는 단 하나의 일을 깊이 있게 해내는 앱과 서비스를 만듭니다. 더 많은 기능이 아니라, 더 나은 한 가지를 위해."
 ogDescription: "오브젝트는 단 하나의 일을 깊이 있게 해내는 앱과 서비스를 만듭니다."
-includeJsonLd: partials/jsonld-ko-org.njk
 ---
-  <main class="page" id="main" tabindex="-1">
-    <div class="wrap">
-      <h1 class="display">하나의 목적,<br/>하나의 앱<span class="accent" aria-hidden="true">.</span></h1>
-      <p class="lede">오브젝트는 단 하나의 일을 깊이 있게 해내는 앱과 서비스를 만듭니다.</p>
-      <p class="body">더 많은 기능이 아니라, 더 나은 한 가지를 위해.</p>
-      <div class="cta-row">
-        <a href="contact.html" class="btn">문의하기 <span class="arrow" aria-hidden="true">→</span></a>
-        <a href="about.html" class="btn btn-secondary">소개 보기</a>
+{%- set t = i18n[lang] -%}
+  <main id="main" tabindex="-1">
+
+    <!-- HERO -->
+    <section id="top" class="site-hero">
+      <div class="shell">
+        <p class="kicker"><span>Software Studio · Busan</span></p>
+        <h1 class="hero-title">하나의 목적,<br/>하나의 앱<span class="accent" aria-hidden="true">.</span></h1>
+        <p class="hero-lede">오브젝트는 단 하나의 일을 깊이 있게 해내는 앱과 서비스를 만듭니다.</p>
+        <p class="hero-sub">더 많은 기능이 아니라, 더 나은 한 가지를 위해.</p>
+        <div class="cta-row">
+          <a href="#contact" class="btn">문의하기 <span class="arrow" aria-hidden="true">→</span></a>
+          <a href="about.html" class="btn btn-secondary">소개 보기</a>
+        </div>
       </div>
-    </div>
+    </section>
+
+    <!-- ABOUT / VISION (요약 — 전체 내용은 about.html) -->
+    <section id="about" class="section">
+      <div class="shell section-inner section-split">
+        <div>
+          <p class="kicker"><span>Vision · Philosophy</span></p>
+          <h2 class="section-title">더 나은 한 가지<span class="accent" aria-hidden="true">.</span></h2>
+        </div>
+        <div>
+          <p class="section-lead">슈퍼앱과 하이퍼캐주얼 사이, 오브젝트는 하나의 분명한 목적을 위해 설계된 도구를 만듭니다. 트렌드를 따라가지 않고, 시간이 지나도 손에 남는 앱을요.</p>
+          <p class="section-actions"><a class="text-link" href="about.html">소개 자세히 보기 <span aria-hidden="true">→</span></a></p>
+          <blockquote class="vision-quote">
+            <p>더 많은 기능이 아니라<br/>더 나은 한 가지<span class="accent" aria-hidden="true">.</span></p>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- VALUES -->
+    <section id="values" class="section section--subtle">
+      <div class="shell section-inner">
+        <p class="kicker"><span>Values</span></p>
+        <h2 class="section-title">우리가 지키는 세 가지<span class="accent" aria-hidden="true">.</span></h2>
+        <div class="values-grid">
+          {%- for v in values[lang] %}
+          <div class="value-card">
+            <div class="value-num">{{ v.num }}<span class="accent" aria-hidden="true">.</span></div>
+            <h3>{{ v.title }}</h3>
+            <p>{{ v.teaser }}</p>
+          </div>
+          {%- endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPANY -->
+    <section id="company" class="section">
+      <div class="shell section-inner section-split">
+        <div>
+          <p class="kicker"><span>Company</span></p>
+          <h2 class="section-title">회사 정보<span class="accent" aria-hidden="true">.</span></h2>
+        </div>
+        <dl class="company-dl">
+          <div class="row"><dt>{{ t.footer.bizName.k }}</dt><dd>{{ t.footer.bizName.v }}</dd></div>
+          <div class="row"><dt>{{ t.footer.ceo.k }}</dt><dd>{{ t.footer.ceo.v }}</dd></div>
+          <div class="row"><dt>{{ t.founded.k }}</dt><dd>{{ t.founded.v }}</dd></div>
+          <div class="row"><dt>{{ t.nav.contact }}</dt><dd><a href="mailto:{{ site.email }}">{{ site.email }}</a></dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- CONTACT (다크 밴드) -->
+    <section id="contact" class="section section--inverse contact-band">
+      <div class="shell section-inner">
+        <p class="kicker"><span>Contact</span></p>
+        <h2 class="contact-title">함께 만들 일이 있나요<span class="accent" aria-hidden="true">.</span></h2>
+        <p class="contact-sub">협업, 제휴, 문의는 이메일로 보내주세요.<br/>영업일 기준 1–2일 내 회신드립니다.</p>
+        <a class="contact-email" href="mailto:{{ site.email }}">{{ site.email }} <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
   </main>

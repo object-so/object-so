@@ -2,10 +2,7 @@
 <html lang="{{ lang }}">
 <head>
 {%- include "partials/head-meta.njk" %}
-{%- if includeJsonLd %}
-
-{% include includeJsonLd %}
-{%- endif %}
+{% include "partials/jsonld.njk" %}
 </head>
 <body>
 

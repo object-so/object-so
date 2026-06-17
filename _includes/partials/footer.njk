@@ -2,13 +2,19 @@
   <!-- BEGIN FOOTER -->
   <footer class="foot" aria-label="{{ t.footer.ariaLabel }}">
     <div class="foot-inner">
-      <div class="foot-info">
-        <div class="row"><span class="k">{{ t.footer.bizName.k }}</span><span class="v">{{ t.footer.bizName.v }}</span></div>
-        <div class="row"><span class="k">{{ t.footer.ceo.k }}</span><span class="v">{{ t.footer.ceo.v }}</span></div>
-        <div class="row"><span class="k">{{ t.footer.address.k }}</span><span class="v">{{ t.footer.address.v }}</span></div>
-        <div class="row"><span class="k">{{ t.footer.email.k }}</span><span class="v"><a href="mailto:{{ site.email }}">{{ site.email }}</a></span></div>
-        <div class="row"><span class="k">{{ t.footer.bizReg.k }}</span><span class="v">{{ site.bizRegNo }} <a class="verify" href="{{ site.bizRegVerifyUrl }}" target="_blank" rel="noopener noreferrer">{{ t.footer.bizReg.verify }}</a></span></div>
-        <div class="row"><span class="k">{{ t.footer.mailOrder.k }}</span><span class="v">{{ t.footer.mailOrder.v }}</span></div>
+      <div class="foot-top">
+        <div class="foot-intro">
+          <div class="foot-brand">Object<span class="accent" aria-hidden="true">.</span></div>
+          <p class="foot-tagline">{{ t.footer.tagline }}</p>
+        </div>
+        <div class="foot-info">
+          <div class="row"><span class="k">{{ t.footer.bizName.k }}</span><span class="v">{{ t.footer.bizName.v }}</span></div>
+          <div class="row"><span class="k">{{ t.footer.ceo.k }}</span><span class="v">{{ t.footer.ceo.v }}</span></div>
+          <div class="row"><span class="k">{{ t.footer.address.k }}</span><span class="v">{{ t.footer.address.v }}</span></div>
+          <div class="row"><span class="k">{{ t.footer.email.k }}</span><span class="v"><a href="mailto:{{ site.email }}">{{ site.email }}</a></span></div>
+          <div class="row"><span class="k">{{ t.footer.bizReg.k }}</span><span class="v">{{ site.bizRegNo }} <a class="verify" href="{{ site.bizRegVerifyUrl }}" target="_blank" rel="noopener noreferrer">{{ t.footer.bizReg.verify }}</a></span></div>
+          <div class="row"><span class="k">{{ t.footer.mailOrder.k }}</span><span class="v">{{ t.footer.mailOrder.v }}</span></div>
+        </div>
       </div>
       <div class="foot-bar">
         <div>© <span data-year>{% year %}</span> {{ t.footer.copyright }}</div>

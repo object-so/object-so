@@ -1,0 +1,59 @@
+{%- set t = i18n[lang] -%}
+{%- set isKo = (lang == "ko") -%}
+{%- set canonical = site.baseUrl + "/" + lang + "/" + slug + ".html" -%}
+{%- set homeUrl = site.baseUrl + "/" + lang + "/index.html" -%}
+{%- if slug == "about" %}{%- set pageName = t.nav.about -%}
+{%- elif slug == "contact" %}{%- set pageName = t.nav.contact -%}
+{%- elif slug == "privacy" %}{%- set pageName = t.footer.privacyLink -%}
+{%- else %}{%- set pageName = t.nav.home -%}{%- endif -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "{{ site.baseUrl }}/#org",
+        "name": {% if isKo %}"오브젝트"{% else %}"Object"{% endif %},
+        "alternateName": {% if isKo %}"Object"{% else %}"오브젝트"{% endif %},
+        "url": "{{ site.baseUrl }}/",
+        "logo": "{{ site.baseUrl }}/assets/img/favicon.svg",
+        "image": "{{ site.baseUrl }}{{ site.ogImagePath }}",
+        "email": "{{ site.email }}",
+        "founder": {
+          "@type": "Person",
+          "name": {% if isKo %}"진재명"{% else %}"Jaemyeong Jin"{% endif %},
+          "alternateName": {% if isKo %}"Jaemyeong Jin"{% else %}"진재명"{% endif %}
+        },
+        "foundingDate": "2019-11-11",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": {% if isKo %}"상리로 86"{% else %}"86 Sangni-ro"{% endif %},
+          "addressLocality": {% if isKo %}"북구"{% else %}"Buk-gu"{% endif %},
+          "addressRegion": {% if isKo %}"부산광역시"{% else %}"Busan"{% endif %},
+          "addressCountry": "KR"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "email": "{{ site.email }}",
+          "contactType": "customer support",
+          "availableLanguage": ["ko", "en"]
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "{{ site.baseUrl }}/#website-{{ lang }}",
+        "url": "{{ site.baseUrl }}/",
+        "name": {% if isKo %}"오브젝트"{% else %}"Object"{% endif %},
+        "inLanguage": {% if isKo %}"ko"{% else %}"en"{% endif %},
+        "publisher": { "@id": "{{ site.baseUrl }}/#org" }
+      }{% if slug != "index" %},
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": {% if isKo %}"홈"{% else %}"Home"{% endif %}, "item": "{{ homeUrl }}" },
+          { "@type": "ListItem", "position": 2, "name": "{{ pageName | safe }}", "item": "{{ canonical }}" }
+        ]
+      }{% endif %}
+    ]
+  }
+  </script>
