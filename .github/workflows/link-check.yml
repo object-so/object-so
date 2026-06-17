@@ -39,14 +39,16 @@ jobs:
         uses: chabad360/htmlproofer@v2
         with:
           directory: ./_site
-          # 403/429는 무시: 개인정보처리방침의 제3자 링크(coupang.com, aboutads.info 등)는
-          # 안티봇/지역차단/레이트리밋으로 자동 요청에 403·429를 반환하지만 실제로는 정상 링크다.
-          # 진짜 깨짐(404/410/5xx/DNS 실패)은 계속 검출된다.
+          # 403/429는 무시: 제3자 링크(coupang.com, aboutads.info 등)는 안티봇/지역차단/
+          # 레이트리밋으로 자동 요청에 403·429를 반환하지만 실제로는 정상 링크다.
+          # *.go.kr 무시: 한국 정부 사이트(ftc/kopico/spo/ecrm.cyber 등)는 US GitHub 러너에서
+          # 거의 항상 타임아웃(status 0)이라 검증 불가하고, 안정적인 고정 URL이라 오탐만 낸다.
+          # 진짜 깨짐(404/410/5xx/DNS 실패 — 검증 가능한 도메인)은 계속 검출된다.
           arguments: |
             --checks Links,Images,Scripts,Favicon
             --enforce-https
             --ignore-status-codes "403,429"
-            --ignore-urls "/^http:\/\/localhost/,/^https:\/\/object\.so\//"
+            --ignore-urls "/^http:\/\/localhost/,/^https:\/\/object\.so\//,/\.go\.kr/"
             --ignore-files "/naver[0-9a-f]+\.html$/"
 
       - name: Open issue on failure
