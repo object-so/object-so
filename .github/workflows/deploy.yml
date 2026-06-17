@@ -81,7 +81,7 @@ jobs:
             --content-type "text/html; charset=utf-8" \
             --exclude "*" --include "*.html" --no-progress
 
-      - name: Sync robots + sitemap + app-ads (no-cache)
+      - name: Sync robots + sitemap + app-ads + llms (no-cache)
         run: |
           aws s3 cp ./_site/robots.txt "s3://${S3_BUCKET}/robots.txt" \
             --cache-control "no-cache" \
@@ -90,6 +90,9 @@ jobs:
             --cache-control "no-cache" \
             --content-type "application/xml; charset=utf-8" --no-progress
           aws s3 cp ./_site/app-ads.txt "s3://${S3_BUCKET}/app-ads.txt" \
+            --cache-control "no-cache" \
+            --content-type "text/plain; charset=utf-8" --no-progress
+          aws s3 cp ./_site/llms.txt "s3://${S3_BUCKET}/llms.txt" \
             --cache-control "no-cache" \
             --content-type "text/plain; charset=utf-8" --no-progress
 

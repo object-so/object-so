@@ -7,4 +7,5 @@ export default {
   bizRegNo: "113-59-00420",
   bizRegVerifyUrl: "https://www.ftc.go.kr/bizCommPop.do?wrkr_no=1135900420",
   mailOrderRegNo: "2019-부산북구-0492",
+  gaMeasurementId: "G-35LJJKFE9K", // GA4 — loaded only in production builds (see partials/analytics.njk)
 };
