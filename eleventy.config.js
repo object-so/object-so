@@ -19,6 +19,9 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("robots.txt");
   eleventyConfig.addPassthroughCopy("app-ads.txt");
   eleventyConfig.addPassthroughCopy("llms.txt");
+  // Search-engine ownership verification files — served verbatim at the site root.
+  eleventyConfig.addPassthroughCopy("naverd4c94d814440fdafdfc7bbc40523a351.html");
+  eleventyConfig.addPassthroughCopy("naver7a5ac797204d3447412c92c9a1a6b7d0.html");
 
   // Watch CSS for live-reload during dev.
   eleventyConfig.addWatchTarget("assets/css/");

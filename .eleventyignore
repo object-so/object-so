@@ -11,6 +11,11 @@ node_modules/
 graphify-out/
 .codegraph/
 
+# 검색엔진 소유확인 파일 — 템플릿 처리하지 말고 passthrough로 루트에 원본 그대로 서빙
+# (eleventy.config.js의 addPassthroughCopy 참고). .html이라 templateFormats와 충돌 방지.
+naverd4c94d814440fdafdfc7bbc40523a351.html
+naver7a5ac797204d3447412c92c9a1a6b7d0.html
+
 # Git/IDE
 .git/
 .github/
