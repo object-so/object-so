@@ -1,0 +1,10 @@
+{%- if site.gaMeasurementId and eleventy.env.runMode == "build" %}
+  <!-- Google Analytics 4 (gtag.js) — production builds only; excluded from `eleventy --serve` so local/dev traffic never hits the live property. Disclosed in the privacy policy (Google LLC · web analytics). -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.gaMeasurementId }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{ site.gaMeasurementId }}');
+  </script>
+{%- endif %}
