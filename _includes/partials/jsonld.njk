@@ -16,6 +16,7 @@
         "name": {% if isKo %}"오브젝트"{% else %}"Object"{% endif %},
         "alternateName": {% if isKo %}"Object"{% else %}"오브젝트"{% endif %},
         "url": "{{ site.baseUrl }}/",
+        "sameAs": [{% for u in site.sameAs %}"{{ u }}"{% if not loop.last %}, {% endif %}{% endfor %}],
         "logo": "{{ site.baseUrl }}/assets/img/favicon.svg",
         "image": "{{ site.baseUrl }}{{ site.ogImagePath }}",
         "email": "{{ site.email }}",
