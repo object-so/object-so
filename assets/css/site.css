@@ -394,7 +394,9 @@ footer.foot {
 .section { border-top: 1px solid var(--border-subtle); }
 .section--subtle { background: var(--surface-subtle); }
 .section--inverse { background: var(--surface-inverse); color: var(--text-on-dark); }
-.section-inner { padding: clamp(72px, 10vw, 128px) 0; }
+/* padding-block(상하)만 지정 — padding 단축속성을 쓰면 .shell의 좌우 여백(clamp)을
+   0으로 덮어써 섹션마다 왼쪽 여백이 달라지는 버그가 생긴다. */
+.section-inner { padding-block: clamp(72px, 10vw, 128px); }
 .section[id], #main { scroll-margin-top: 84px; }
 
 .section-split {
