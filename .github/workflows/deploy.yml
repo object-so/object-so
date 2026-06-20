@@ -95,10 +95,9 @@ jobs:
           aws s3 cp ./_site/llms.txt "s3://${S3_BUCKET}/llms.txt" \
             --cache-control "no-cache" \
             --content-type "text/plain; charset=utf-8" --no-progress
-          aws s3 cp ./_site/naverd4c94d814440fdafdfc7bbc40523a351.html "s3://${S3_BUCKET}/naverd4c94d814440fdafdfc7bbc40523a351.html" \
-            --cache-control "no-cache" \
-            --content-type "text/html; charset=utf-8" --no-progress
-          aws s3 cp ./_site/naver7a5ac797204d3447412c92c9a1a6b7d0.html "s3://${S3_BUCKET}/naver7a5ac797204d3447412c92c9a1a6b7d0.html" \
+          # 네이버 소유확인 파일 전체(naver*.html)를 루트로 업로드 (파일이 늘어도 수정 불필요)
+          aws s3 sync ./_site/ "s3://${S3_BUCKET}/" \
+            --exclude "*" --include "naver*.html" \
             --cache-control "no-cache" \
             --content-type "text/html; charset=utf-8" --no-progress
 
