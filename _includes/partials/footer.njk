@@ -10,15 +10,18 @@
         <div class="foot-info">
           <div class="row"><span class="k">{{ t.footer.bizName.k }}</span><span class="v">{{ t.footer.bizName.v }}</span></div>
           <div class="row"><span class="k">{{ t.footer.ceo.k }}</span><span class="v">{{ t.footer.ceo.v }}</span></div>
-          <div class="row"><span class="k">{{ t.footer.address.k }}</span><span class="v">{{ t.footer.address.v }}</span></div>
-          <div class="row"><span class="k">{{ t.footer.email.k }}</span><span class="v"><a href="mailto:{{ site.email }}">{{ site.email }}</a></span></div>
           <div class="row"><span class="k">{{ t.footer.bizReg.k }}</span><span class="v">{{ site.bizRegNo }} <a class="verify" href="{{ site.bizRegVerifyUrl }}" target="_blank" rel="noopener noreferrer">{{ t.footer.bizReg.verify }}</a></span></div>
           <div class="row"><span class="k">{{ t.footer.mailOrder.k }}</span><span class="v">{{ t.footer.mailOrder.v }}</span></div>
+          <div class="row"><span class="k">{{ t.footer.address.k }}</span><span class="v">{{ t.footer.address.v }}</span></div>
+          <div class="row"><span class="k">{{ t.footer.phone.k }}</span><span class="v">{{ site.phone }}</span></div>
+          <div class="row"><span class="k">{{ t.footer.fax.k }}</span><span class="v">{{ site.fax }}</span></div>
+          <div class="row"><span class="k">{{ t.footer.email.k }}</span><span class="v"><a href="mailto:{{ site.email }}">{{ site.email }}</a></span></div>
+          <div class="row"><span class="k">{{ t.footer.hosting.k }}</span><span class="v">{{ site.hostingProvider }}</span></div>
         </div>
       </div>
       <div class="foot-bar">
         <div>© <span data-year>{% year %}</span> {{ t.footer.copyright }}</div>
-        <div class="links"><a href="privacy.html"{% if slug == "privacy" %} aria-current="page"{% endif %}>{{ t.footer.privacyLink }}</a></div>
+        <div class="links"><a href="{{ site.blogUrl }}" target="_blank" rel="noopener noreferrer">{{ t.footer.blogLink }}</a><a href="privacy.html"{% if slug == "privacy" %} aria-current="page"{% endif %}>{{ t.footer.privacyLink }}</a></div>
         <div class="lang-pair" aria-label="{{ t.footer.langAriaLabel }}">
           {% if lang == "ko" %}<span class="on" aria-current="true">KO</span><span class="sep" aria-hidden="true">|</span><a href="../en/{{ slug }}.html" hreflang="en">EN</a>{% else %}<a href="../ko/{{ slug }}.html" hreflang="ko">KO</a><span class="sep" aria-hidden="true">|</span><span class="on" aria-current="true">EN</span>{% endif %}
         </div>

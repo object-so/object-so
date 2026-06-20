@@ -8,10 +8,12 @@
         <a href="#about">{{ t.nav.about }}</a>
         <a href="#values">{{ t.nav.values }}</a>
         <a href="#company">{{ t.nav.company }}</a>
+        <a href="{{ site.blogUrl }}" target="_blank" rel="noopener noreferrer">{{ t.nav.blog }}</a>
         <a href="#contact" class="nav-cta">{{ t.nav.contact }}</a>
         {%- else %}
         <a href="index.html"{% if activeNav == "home" %} class="active" aria-current="page"{% endif %}>{{ t.nav.home }}</a>
         <a href="about.html"{% if activeNav == "about" %} class="active" aria-current="page"{% endif %}>{{ t.nav.about }}</a>
+        <a href="{{ site.blogUrl }}" target="_blank" rel="noopener noreferrer">{{ t.nav.blog }}</a>
         <a href="contact.html" class="nav-cta"{% if activeNav == "contact" %} aria-current="page"{% endif %}>{{ t.nav.contact }}</a>
         {%- endif %}
       </div>
