@@ -19,9 +19,9 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("robots.txt");
   eleventyConfig.addPassthroughCopy("app-ads.txt");
   eleventyConfig.addPassthroughCopy("llms.txt");
-  // Search-engine ownership verification files — served verbatim at the site root.
-  eleventyConfig.addPassthroughCopy("naverd4c94d814440fdafdfc7bbc40523a351.html");
-  eleventyConfig.addPassthroughCopy("naver7a5ac797204d3447412c92c9a1a6b7d0.html");
+  // Search-engine ownership verification files (naver*.html) — served verbatim at the site root.
+  // 글롭이라 네이버 파일을 추가할 땐 루트에 파일만 두면 된다(설정 수정 불필요).
+  eleventyConfig.addPassthroughCopy("naver*.html");
 
   // Watch CSS for live-reload during dev.
   eleventyConfig.addWatchTarget("assets/css/");
