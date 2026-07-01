@@ -1,179 +1,171 @@
 # object-so
 
-오브젝트(Object) 회사 소개 사이트 — Eleventy 기반 정적 사이트, KO·EN 다국어.
+오브젝트(Object) 회사 소개 사이트. Eleventy 기반 정적 사이트이며 한국어와 영어 페이지를 `https://object.so`에서 제공합니다.
 
-> 단일 목적의 앱과 서비스를 만드는 1인 소프트웨어 공방. 페이지는 작고, 카피는 짧고, 타이포는 단단하게.
+## 현재 구성
 
-라이브: <https://object.so>
-
-## 기술 스택
-
-| 영역 | 도구 |
+| 영역 | 내용 |
 |---|---|
-| 정적 사이트 빌더 | [Eleventy](https://www.11ty.dev) 3.x (Nunjucks 템플릿) |
-| 콘텐츠 모델 | front matter + `_includes/layouts` + `_data/{site,i18n,pages}.js` |
-| 호스팅 | AWS S3 + CloudFront (KR ap-northeast-2) |
-| 배포 | GitHub Actions OIDC (`.github/workflows/deploy.yml`) — push to `main` 시 자동 |
-| 검증 | hreflang/canonical/sitemap 일관성 + JSON-LD 파싱 + html-proofer 내부 링크 |
-| 폰트 | [Pretendard](https://github.com/orioncactus/pretendard) 9 weights (self-hosted OTF) |
-| 컬러 | [Open Color](https://yeun.github.io/open-color/) 회색 + 단일 액센트(blue-6) |
+| 사이트 빌더 | Eleventy 3.x, Nunjucks, Markdown |
+| 런타임 | 정적 HTML/CSS/이미지/폰트 |
+| 언어 | `ko`, `en` |
+| 호스팅 | AWS S3 + CloudFront |
+| 배포 | `main` push 시 GitHub Actions OIDC로 자동 배포 |
+| 검색/공유 | canonical, hreflang, sitemap, robots, Open Graph, Twitter Card, JSON-LD, `llms.txt` |
+| 폰트 | self-hosted `PretendardStdVariable.woff2` |
 
-## 폴더 구조
+## 주요 파일
 
-```
-object-so/
-├── _data/                       Eleventy 전역 데이터 (모든 템플릿에서 접근)
-│   ├── site.js                  baseUrl · email · 사업자등록번호
-│   ├── i18n.js                  KO/EN 공통 문자열 (nav 라벨 · aria-label · locale)
-│   └── pages.js                 sitemap 페이지 등록부 (slug · priority · changefreq · lastmod)
-├── _includes/                   Nunjucks 레이아웃 + 파셜
-│   ├── layouts/
-│   │   ├── base.njk             KO/EN 페이지 골격 (head + body + script)
-│   │   └── redirect.njk         루트 / 페이지의 언어 분기 셸
+```text
+.
+├── 404.html                         # noindex, follow 404 fallback
+├── index.html                       # root language redirect shell, noindex
+├── ko/, en/                         # 언어별 index/about/contact 페이지
+├── content/legal/                   # privacy markdown source
+├── _data/
+│   ├── site.js                      # baseUrl, 연락처, 사업자 정보, GA, sameAs
+│   ├── i18n.js                      # 언어별 UI 문자열
+│   ├── pages.js                     # sitemap 대상 페이지 registry
+│   └── values.js                    # 홈 value 카드 데이터
+├── _includes/
+│   ├── layouts/base.njk             # 일반 페이지 layout
+│   ├── layouts/redirect.njk         # root redirect layout
 │   └── partials/
-│       ├── head-meta.njk        title · canonical · hreflang · OG · twitter · icon · css
-│       ├── header.njk           nav + KO|EN 토글
-│       ├── footer.njk           회사 정보 + privacy 링크 + KO|EN 토글
-│       └── jsonld-{ko,en}-org.njk  index 페이지 Organization JSON-LD
-├── content/legal/               privacy 페이지 source-of-truth
-│   ├── privacy-policy-ko.md  →  _site/ko/privacy.html
-│   └── privacy-policy-en.md  →  _site/en/privacy.html
-├── ko/, en/                     index · about · contact (front matter + <main>만)
-├── index.html                   루트 / — 언어 분기 redirect (noindex)
-├── sitemap.njk                  _data/pages.js → _site/sitemap.xml 자동 생성
-├── assets/
-│   ├── css/{tokens,site}.css    디자인 토큰 + 페이지 스타일
-│   ├── fonts/Pretendard-*.otf
-│   └── img/{favicon*,apple-touch-icon,og-1200x630,logo,wordmark}
-├── docs/HOSTING.md              호스팅·배포 상세 가이드
-├── scripts/check-hreflang.py    hreflang/canonical/sitemap 일관성 검사 (_site/ 기준)
-├── .github/workflows/
-│   ├── ci.yml                   PR/push 검증 (build → JSON-LD/sitemap/hreflang/html-proofer)
-│   └── deploy.yml               main push 시 빌드·S3 sync·CloudFront invalidate·smoke
-├── eleventy.config.js
-├── package.json, package-lock.json
-├── robots.txt, app-ads.txt
-└── _site/                       빌드 산출물 (gitignore)
+│       ├── head-meta.njk            # title, description, canonical, hreflang, OG/Twitter
+│       ├── jsonld.njk               # Organization, WebSite, BreadcrumbList
+│       ├── header.njk
+│       ├── footer.njk
+│       └── analytics.njk
+├── assets/css/                      # tokens.css, site.css
+├── assets/fonts/                    # Pretendard variable font
+├── assets/img/                      # favicon, logo, OG image
+├── scripts/
+│   ├── check-hreflang.py            # sitemap 기반 canonical/hreflang 검증
+│   └── check-json-ld.py             # sitemap 기반 JSON-LD 파싱 검증
+├── sitemap.njk                      # _data/pages.js -> /sitemap.xml
+├── robots.txt
+├── app-ads.txt
+├── llms.txt
+└── docs/HOSTING.md                  # AWS 배포 상세
 ```
+
+`_site/`는 빌드 산출물이며 git에 커밋하지 않습니다.
 
 ## 빠른 시작
 
 ```bash
 npm install
-npm run dev      # http://localhost:8080 라이브 리로드
-npm run build    # _site/ 산출
-npm run clean    # _site/ 삭제
+npm run dev
 ```
 
-검증:
+로컬 서버는 기본적으로 `http://localhost:8080`입니다.
+
+## 빌드와 검증
 
 ```bash
-npm run check:hreflang   # hreflang/canonical/sitemap 일관성 (build 필요)
-npm run check:json-ld    # 모든 페이지의 JSON-LD JSON 파싱 검사
+npm run build
+npm run check:seo
 ```
 
-## 콘텐츠 작업
+`check:seo`는 다음을 한 번에 실행합니다.
 
-### 새 페이지 추가
+1. Eleventy build
+2. sitemap에 등재된 HTML 페이지의 JSON-LD 파싱
+3. sitemap, canonical, HTML hreflang 상호 일관성 검증
 
-예: `/ko/works.html` 추가
-
-1. `ko/works.html` 생성:
-   ```yaml
-   ---
-   layout: layouts/base.njk
-   permalink: /ko/works.html
-   lang: ko
-   slug: works
-   activeNav: works           # nav에 표시할 경우, 없으면 생략
-   title: "작업 · 오브젝트"
-   description: "오브젝트가 만든 앱들."
-   ---
-     <main class="page" id="main" tabindex="-1">
-       <div class="wrap">
-         <h1 class="display">작업<span class="accent" aria-hidden="true">.</span></h1>
-         …
-       </div>
-     </main>
-   ```
-2. `en/works.html`도 동일 패턴 (lang: en, EN 콘텐츠).
-3. `_data/i18n.js`의 `nav.works`에 KO/EN 라벨 추가, `_includes/partials/header.njk`에 `<a href="works.html">…</a>` 추가.
-4. `_data/pages.js`에 한 줄 추가:
-   ```js
-   { slug: "works", priority: "0.7", changefreq: "monthly" },
-   ```
-5. push → CI → Deploy → smoke test (8개 라우트 검증 자동).
-
-`<head>`/header/footer는 layout이 처리하니 손댈 필요 없음. canonical/hreflang/OG/JSON-LD는 front matter (`slug`, `lang`, `title`, `description`)만으로 자동 생성됨.
-
-### privacy 정책 수정
-
-`content/legal/privacy-policy-{ko,en}.md` 한 곳만 편집. 빌드가 `/_site/{ko,en}/privacy.html`로 렌더. 시행일 갱신 시:
-
-1. md 본문의 `<div class="privacy-meta">` (시행일/Effective)
-2. `_data/pages.js`의 `privacy.lastmod`
-
-법적 효력 기준은 **한국어** 버전. 영문은 참고용.
-
-### 사이트 메타 변경 (이메일·주소·사업자번호)
-
-`_data/site.js` (전역) 또는 `_data/i18n.js` (언어별 라벨) 수정. 모든 푸터·JSON-LD가 자동 반영.
-
-### 도메인 전환 (object.so → 다른 도메인)
+개별 실행도 가능합니다.
 
 ```bash
-# baseUrl만 _data/site.js에서 바꾸면 사실상 끝
-sed -i '' 's|https://object.so|https://example.com|g' _data/site.js
-
-# JSON-LD 파셜에 absolute URL 하드코딩이 있으니 그것도 함께
-grep -l 'object.so' _includes/partials/jsonld-*.njk content/legal/*.md \
-  | xargs sed -i '' 's|https://object.so|https://example.com|g'
+npm run check:json-ld
+npm run check:hreflang
 ```
 
-deploy.yml의 `S3_BUCKET`, `CF_DISTRIBUTION_ID`, `AWS_ROLE_ARN` 등 인프라 식별자도 별도 갱신 필요. 자세한 내용은 `docs/HOSTING.md`.
+내부 링크/이미지/favicon 검증은 CI의 html-proofer가 담당합니다. 외부 링크 검사는 `.github/workflows/link-check.yml`에서 주 1회 별도 실행합니다.
 
-## 디자인 시스템
+## 페이지 추가
 
-- **컬러**: [Open Color](https://yeun.github.io/open-color/) 회색 파운데이션 + 단일 액센트(blue-6 `#228be6`)
-- **타이포**: [Pretendard](https://github.com/orioncactus/pretendard) (KR + Latin), `font-display: swap`. 가장 큰 LCP 후보(Regular/ExtraBold)는 preload
-- **간격**: 4px 그리드, `--space-*` 토큰
-- **다크 모드**: `prefers-color-scheme: dark` 자동 분기. `<body class="theme-light">` 부여 시 강제 light
-- **모션**: `prefers-reduced-motion: reduce` 시 transition/animation 비활성
+새 공개 페이지를 추가할 때는 KO/EN 쌍을 같이 추가합니다.
 
-토큰 정의 → `assets/css/tokens.css`. 페이지 스타일 → `assets/css/site.css`.
+1. `ko/<slug>.html`, `en/<slug>.html` 생성
+2. front matter에 `layout`, `permalink`, `lang`, `slug`, `title`, `description` 지정
+3. navigation에 필요하면 `_data/i18n.js`, `_includes/partials/header.njk`, `_includes/partials/footer.njk` 수정
+4. sitemap 대상이면 `_data/pages.js`에 `{ slug, priority, changefreq, lastmod? }` 추가
+5. `npm run check:seo`
 
-## 페이지 메타데이터 컨벤션
+`head-meta.njk`가 canonical, hreflang, OG/Twitter, icon, CSS preload를 생성합니다. `jsonld.njk`는 Organization/WebSite와 하위 페이지 BreadcrumbList를 생성합니다.
 
-레이아웃이 자동 생성하는 메타:
+## Privacy 정책 수정
 
-- `<title>`, `<meta name="description">`
-- `<link rel="canonical">` = `https://object.so/{lang}/{slug}.html`
-- `<link rel="alternate" hreflang="ko|en|x-default">` 트리오 (x-default는 항상 KO)
-- `<meta property="og:*">` (type/site_name/locale/locale:alternate/title/description/url/image/image:width/height)
-- `<meta name="twitter:card">`
-- favicon, apple-touch-icon, theme-color (light/dark)
-- Pretendard Regular/ExtraBold preload + tokens.css/site.css 로드
+소스는 Markdown입니다.
 
-페이지별 front matter로 오버라이드 가능: `ogTitle`, `ogDescription`, `includeJsonLd`(JSON-LD 파셜 경로).
+```text
+content/legal/privacy-policy-ko.md
+content/legal/privacy-policy-en.md
+```
 
-## CI · 배포
+시행일을 바꾸면 본문과 함께 `_data/pages.js`의 `privacy.lastmod`도 갱신합니다. 법적 효력 기준은 한국어 버전입니다.
 
-| Workflow | 트리거 | 단계 |
+## SEO와 crawler-facing 산출물
+
+- `/ko/*.html`, `/en/*.html`: indexable content pages
+- `/index.html`: 언어 분기용 root shell, `noindex`
+- `/404.html`: fallback page, `noindex, follow`, sitemap 제외
+- `/sitemap.xml`: `_data/pages.js`에서 생성, KO/EN alternate 포함
+- `/robots.txt`: sitemap 위치 안내, root shell `/index.html` disallow
+- `/llms.txt`: LLM/agent용 사이트 요약과 핵심 링크
+- `naver*.html`: 검색 소유권 확인 파일, root로 passthrough
+- `/app-ads.txt`: 광고 생태계 확인 파일
+
+canonical URL은 `https://object.so/{lang}/{slug}.html` 형식입니다. `x-default`는 한국어 URL을 가리킵니다.
+
+## CI와 배포
+
+| Workflow | Trigger | 역할 |
 |---|---|---|
-| `ci.yml` | PR · push | npm install → build → JSON-LD 파싱 → sitemap well-formed → hreflang 일관성 → html-proofer |
-| `deploy.yml` | push to `main` | build → AWS OIDC → hreflang 검증 → S3 sync (`_site/`) → CloudFront invalidate → smoke test |
+| `ci.yml` | push, PR, manual | install, `npm run check:seo`, html-proofer internal check |
+| `deploy.yml` | `main` push, manual | build, AWS OIDC, S3 sync, CloudFront invalidation, live smoke test |
+| `link-check.yml` | weekly, manual | 외부 링크 health check, 실패 시 issue 생성 |
 
-S3 / CloudFront 자세한 설정은 [`docs/HOSTING.md`](./docs/HOSTING.md).
+배포 리소스는 `.github/workflows/deploy.yml`의 `env` 블록에서 관리합니다.
 
-## 접근성
+- AWS region: `ap-northeast-2`
+- S3 bucket: `object-so-200247611510-ap-northeast-2-an`
+- CloudFront distribution: `E3GUZ9POF885VR`
 
-- skip-to-content 링크, `aria-current="page"` (active nav · footer privacy 링크), `aria-label`, focus-visible outline 적용
-- 색상 대비는 WCAG 2.1 AA 기준 axe-core 통과 (`--fg-4` 작은 텍스트 한정 디자이너 의도 유지)
-- 다크 모드에서도 동일 대비 보장
+더 자세한 운영 메모는 [docs/HOSTING.md](./docs/HOSTING.md)를 봅니다.
+
+## 변경 전 체크리스트
+
+```bash
+git status -sb
+npm run check:seo
+git diff --check
+```
+
+`main`에 push하면 CI와 배포가 모두 실행됩니다. 배포 완료 후 라이브 확인이 필요하면 다음 표면을 우선 봅니다.
+
+```bash
+curl -I https://object.so/404.html
+curl -I https://object.so/sitemap.xml
+curl -I https://object.so/robots.txt
+curl -I https://object.so/llms.txt
+```
+
+## Git ignore 정책
+
+커밋 대상은 소스와 운영 설정입니다. 아래는 로컬 생성물로 취급합니다.
+
+- `_site/`
+- `node_modules/`
+- `.claude/`, `.codex/`, `.serena/`, `.codegraph/`, `graphify-out/`
+- Python cache (`__pycache__/`, `*.pyc`)
+- editor, OS, log, env 파일
 
 ## 라이선스
 
-회사 소유 콘텐츠. 외부 사용 시 별도 문의: `contact@object.so`.
+사이트 콘텐츠는 오브젝트 소유입니다. 외부 사용 문의: `contact@object.so`
 
-- 폰트: Pretendard — SIL Open Font License 1.1
-- 컬러: Open Color — MIT
+외부 자산 라이선스:
+
+- Pretendard: SIL Open Font License 1.1
+- Open Color 기반 색상 토큰: MIT
