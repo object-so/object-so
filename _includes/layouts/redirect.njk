@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{{ title }}</title>
-  <meta name="description" content="{{ description }}" />
+  <title>{{ title | escape }}</title>
+  <meta name="description" content="{{ description | escape }}" />
   <meta name="robots" content="noindex" />
 
   <link rel="canonical" href="{{ site.baseUrl }}/ko/index.html" />

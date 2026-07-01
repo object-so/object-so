@@ -72,6 +72,9 @@ jobs:
           aws s3 cp ./_site/index.html "s3://${S3_BUCKET}/index.html" \
             --cache-control "public, max-age=3600" \
             --content-type "text/html; charset=utf-8" --no-progress
+          aws s3 cp ./_site/404.html "s3://${S3_BUCKET}/404.html" \
+            --cache-control "public, max-age=3600" \
+            --content-type "text/html; charset=utf-8" --no-progress
           aws s3 sync ./_site/ko/ "s3://${S3_BUCKET}/ko/" \
             --cache-control "public, max-age=3600" \
             --content-type "text/html; charset=utf-8" \
@@ -125,7 +128,7 @@ jobs:
           [ -n "$APEX_IP" ] || { echo "DNS resolution failed"; exit 1; }
           echo "object.so → $APEX_IP"
           # Probe core routes; fail on any 4xx/5xx (excluding 301/302).
-          for path in "/" "/ko/" "/en/" "/ko/contact.html" "/en/contact.html" "/sitemap.xml" "/robots.txt" "/app-ads.txt"; do
+          for path in "/" "/404.html" "/ko/" "/en/" "/ko/contact.html" "/en/contact.html" "/sitemap.xml" "/robots.txt" "/app-ads.txt"; do
             CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 \
               --resolve "object.so:443:$APEX_IP" "https://object.so$path")
             echo "  https://object.so$path → $CODE"

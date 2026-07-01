@@ -8,8 +8,9 @@
     "dev": "eleventy --serve --quiet",
     "build": "eleventy",
     "clean": "rm -rf _site",
+    "check:seo": "npm run build && npm run check:json-ld && npm run check:hreflang",
     "check:links": "echo 'See .github/workflows/check.yml — uses html-proofer in CI. For local: docker run -v $PWD/_site:/site klakegg/html-proofer /site --check-html --enforce-https'",
-    "check:json-ld": "find ./_site -name '*.html' | xargs -I{} sh -c 'python3 -c \"import re, json, sys; s=open(sys.argv[1]).read(); m=re.search(r\\\"<script type=.application/ld\\\\+json.>\\\\s*(\\\\{.*?\\\\})\\\\s*</script>\\\", s, re.S); json.loads(m.group(1)) if m else None; print(\\\"OK \\\" + sys.argv[1])\" {}'",
+    "check:json-ld": "python3 scripts/check-json-ld.py",
     "check:hreflang": "python3 scripts/check-hreflang.py"
   },
   "devDependencies": {
