@@ -36,5 +36,8 @@
 
   <link rel="preload" href="/assets/fonts/PretendardStdVariable.woff2" as="font" type="font/woff2" crossorigin />
 
-  <link rel="stylesheet" href="/assets/css/tokens.css" />
-  <link rel="stylesheet" href="/assets/css/site.css" />
+  {#- 내용 해시를 붙여 «새 HTML + 옛 CSS» 조합을 원천 차단한다. eleventy.config.js 의 bust 필터 참고.
+      폰트는 일부러 제외했다 — tokens.css 의 @font-face 가 같은 파일을 참조하는데 preload 만
+      지문이 붙으면 URL 이 어긋나 preload 가 무효가 되고 폰트를 두 번 받는다. -#}
+  <link rel="stylesheet" href="{{ '/assets/css/tokens.css' | bust }}" />
+  <link rel="stylesheet" href="{{ '/assets/css/site.css' | bust }}" />

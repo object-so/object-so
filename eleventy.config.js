@@ -9,6 +9,8 @@
 //   npm run build           # outputs _site/
 //   npm run dev             # local preview at http://localhost:8080
 
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import markdownIt from "markdown-it";
 import markdownItAttrs from "markdown-it-attrs";
 
@@ -38,6 +40,29 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("isodate", (d) => {
     const date = d instanceof Date ? d : new Date(d);
     return date.toISOString().slice(0, 10);
+  });
+
+  // 자산 URL에 내용 해시를 붙인다 — `/assets/css/site.css` → `…/site.css?v=1a2b3c4d`
+  //
+  // 왜 필요한가: deploy.yml 이 CSS 에 max-age=604800(7일)을, HTML 에는 3600(1시간)을
+  // 준다. 파일명에 지문이 없으면 재방문자는 «새 HTML + 옛 CSS» 를 최대 7일간 본다.
+  // 실제로 햄버거 배포(#19) 직후 그 상태가 발생했다 — 데스크톱에 토글이 튀어나오고
+  // 620~780px 에서 nav 가 문서를 밀어냈다. CloudFront invalidation 은 엣지만 비우지
+  // 방문자 브라우저 캐시는 건드리지 못한다. URL 이 바뀌어야 브라우저가 다시 받는다.
+  //
+  // 메모이즈하지 않는 이유: dev 서버가 CSS 를 감시하며 재빌드하는데, 캐시하면 편집
+  // 후에도 옛 해시가 남아 live-reload 가 어긋난다. 빌드당 파일 읽기 28회는 무시할 수준.
+  eleventyConfig.addFilter("bust", (urlPath) => {
+    try {
+      const hash = createHash("sha1")
+        .update(readFileSync(`.${urlPath}`))
+        .digest("hex")
+        .slice(0, 8);
+      return `${urlPath}?v=${hash}`;
+    } catch (err) {
+      // 조용히 지문 없는 URL 을 내보내면 캐시 스큐가 소리 없이 돌아온다. 빌드를 세운다.
+      throw new Error(`bust 필터: ${urlPath} 를 읽을 수 없다 (${err.code ?? err.message})`);
+    }
   });
 
   return {
