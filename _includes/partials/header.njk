@@ -4,15 +4,18 @@
     <div class="nav-inner">
       <a href="{% if slug == 'index' %}#top{% else %}index.html{% endif %}" class="brand" aria-label="{{ t.nav.brandAriaLabel }}">Object<span class="dot" aria-hidden="true">.</span></a>
       <div class="nav-links">
+        {#- 앵커 항목을 먼저 묶고, 페이지 링크(제품·블로그)를 뒤에 둔 다음 CTA로 끝낸다. -#}
         {%- if slug == "index" %}
         <a href="#about">{{ t.nav.about }}</a>
         <a href="#values">{{ t.nav.values }}</a>
         <a href="#company">{{ t.nav.company }}</a>
+        <a href="products.html">{{ t.nav.products }}</a>
         <a href="{{ site.blogUrl }}" target="_blank" rel="noopener noreferrer">{{ t.nav.blog }}</a>
         <a href="#contact" class="nav-cta">{{ t.nav.contact }}</a>
         {%- else %}
         <a href="index.html"{% if activeNav == "home" %} class="active" aria-current="page"{% endif %}>{{ t.nav.home }}</a>
         <a href="about.html"{% if activeNav == "about" %} class="active" aria-current="page"{% endif %}>{{ t.nav.about }}</a>
+        <a href="products.html"{% if activeNav == "products" %} class="active" aria-current="page"{% endif %}>{{ t.nav.products }}</a>
         <a href="{{ site.blogUrl }}" target="_blank" rel="noopener noreferrer">{{ t.nav.blog }}</a>
         <a href="contact.html" class="nav-cta"{% if activeNav == "contact" %} aria-current="page"{% endif %}>{{ t.nav.contact }}</a>
         {%- endif %}

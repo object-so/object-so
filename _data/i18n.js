@@ -8,6 +8,16 @@ export default {
     ogImageAlt: "오브젝트 — 하나의 목적, 하나의 앱",
     skipLink: "본문 바로가기",
     founded: { k: "개업", v: "2019. 11. 11." },
+    // BreadcrumbList 항목명 — jsonld.njk가 slug로 조회한다.
+    // 새 페이지를 추가하면 여기에도 한 줄 넣는다. 누락 시 check-json-ld.py가 실패한다.
+    pageNames: {
+      about:       "소개",
+      contact:     "문의",
+      privacy:     "개인정보처리방침",
+      terms:       "이용약관",
+      products:    "제품",
+      dailysudoku: "데일리스도쿠",
+    },
     nav: {
       ariaLabel: "주 메뉴",
       brandAriaLabel: "Object — 홈",
@@ -16,6 +26,7 @@ export default {
       contact: "문의",
       values: "가치",
       company: "회사",
+      products: "제품",
       blog: "블로그",
       langAriaLabel: "언어 선택",
     },
@@ -33,6 +44,7 @@ export default {
       hosting:    { k: "호스팅" },
       copyright: "Object. All rights reserved.",
       privacyLink: "개인정보처리방침",
+      termsLink: "이용약관",
       blogLink: "블로그",
       langAriaLabel: "언어 선택",
     },
@@ -44,6 +56,14 @@ export default {
     ogImageAlt: "Object — one purpose, one app",
     skipLink: "Skip to main content",
     founded: { k: "Established", v: "November 11, 2019" },
+    pageNames: {
+      about:       "About",
+      contact:     "Contact",
+      privacy:     "Privacy Policy",
+      terms:       "Terms of Service",
+      products:    "Products",
+      dailysudoku: "DailySudoku",
+    },
     nav: {
       ariaLabel: "Main menu",
       brandAriaLabel: "Object — Home",
@@ -52,6 +72,7 @@ export default {
       contact: "Contact",
       values: "Values",
       company: "Company",
+      products: "Products",
       blog: "Blog",
       langAriaLabel: "Language",
     },
@@ -69,6 +90,7 @@ export default {
       hosting:    { k: "Hosting" },
       copyright: "Object. All rights reserved.",
       privacyLink: "Privacy Policy",
+      termsLink: "Terms",
       blogLink: "Blog",
       langAriaLabel: "Language",
     },

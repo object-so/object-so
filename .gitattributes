@@ -1,0 +1,6 @@
+# 스토어 뱃지는 벤더 아트워크를 바이트 그대로 보관해야 한다.
+# 이 선언이 없으면 git이 SVG를 텍스트로 자동 판정하고, core.autocrlf=true 환경에서
+# 체크아웃할 때 LF→CRLF 변환으로 바이트가 바뀐다. 그러면 아무도 아트워크를 건드리지
+# 않았는데 scripts/check-badges.py의 SHA-256 락이 실패하고, 그 상태로 커밋이 돌아오면
+# 실제로 벤더 아트워크가 변조된다.
+assets/img/badges/*.svg -text
