@@ -3,7 +3,16 @@
   <nav class="nav" aria-label="{{ t.nav.ariaLabel }}">
     <div class="nav-inner">
       <a href="{% if slug == 'index' %}#top{% else %}index.html{% endif %}" class="brand" aria-label="{{ t.nav.brandAriaLabel }}">Object<span class="dot" aria-hidden="true">.</span></a>
-      <div class="nav-links">
+      {#- 햄버거 토글. ≤767px 에서만 보이며(site.css 의 @container), 제어 대상인
+          패널 바로 앞에 둬서 포커스가 자연스럽게 이어지게 한다.
+          aria-label 은 "메뉴"로 고정한다 — 열림/닫힘으로 바꾸면 aria-expanded 와
+          겹쳐 스크린리더가 상태를 두 번 안내한다. -#}
+      <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-panel" aria-label="{{ t.nav.menuAriaLabel }}">
+        {#- Lucide menu / x — 디자인 시스템이 지정한 아웃라인 아이콘 규격(stroke 1.75, round cap). -#}
+        <svg class="i-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
+        <svg class="i-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+      <div class="nav-links" id="nav-panel">
         {#- 앵커 항목을 먼저 묶고, 페이지 링크(제품·블로그)를 뒤에 둔 다음 CTA로 끝낸다. -#}
         {%- if slug == "index" %}
         <a href="#about">{{ t.nav.about }}</a>
