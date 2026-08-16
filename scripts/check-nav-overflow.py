@@ -104,24 +104,28 @@ def main() -> int:
                 )
 
     # 3. 햄버거 마크업 (빌드 산출물)
-    page = SITE / "ko" / "index.html"
-    if not page.exists():
-        issues.append(f"빌드 산출물이 없음: {page}. 먼저 `npm run build`.")
-    else:
+    # header.njk 의 두 분기를 모두 검사한다. 토글은 if/else «밖»이라 오늘은 갈릴 수 없지만,
+    # 가드의 목적이 미래의 편집을 잡는 것이므로 index 만 보면 else 분기 수정이 그냥 통과한다.
+    # 실제 배포 페이지 14개 중 12개가 non-index 분기다.
+    for rel in ("ko/index.html", "ko/dailysudoku.html"):
+        page = SITE / rel
+        if not page.exists():
+            issues.append(f"빌드 산출물이 없음: {page}. 먼저 `npm run build`.")
+            continue
         html = page.read_text(encoding="utf-8")
         if 'class="nav-toggle"' not in html:
-            issues.append("ko/index.html: .nav-toggle 버튼이 없다")
+            issues.append(f"{rel}: .nav-toggle 버튼이 없다")
         if 'aria-controls="nav-panel"' not in html:
-            issues.append("ko/index.html: 토글에 aria-controls=\"nav-panel\" 이 없다")
+            issues.append(f'{rel}: 토글에 aria-controls="nav-panel" 이 없다')
         if 'id="nav-panel"' not in html:
-            issues.append("ko/index.html: aria-controls 가 가리키는 id=\"nav-panel\" 이 없다")
-        if 'aria-expanded' not in html:
-            issues.append("ko/index.html: 토글에 aria-expanded 가 없다")
+            issues.append(f'{rel}: aria-controls 가 가리키는 id="nav-panel" 이 없다')
+        if "aria-expanded" not in html:
+            issues.append(f"{rel}: 토글에 aria-expanded 가 없다")
         # 4. JS 없을 때의 탈출구
         if "<noscript>" not in html or ".nav-toggle" not in html.split("<noscript>")[-1][:800]:
             issues.append(
-                "ko/index.html: <noscript> 폴백이 없다 — JS 가 없으면 토글이 죽은 버튼이 되고 "
-                "내비게이션 전체에 도달할 수 없게 된다"
+                f"{rel}: <noscript> 폴백이 없다 — JS 가 없으면 토글이 죽은 버튼이 되고 "
+                f"내비게이션 전체에 도달할 수 없게 된다"
             )
 
     if issues:
