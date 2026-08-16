@@ -4,6 +4,24 @@
 {%- include "partials/head-meta.njk" %}
 {% include "partials/jsonld.njk" %}
 {% include "partials/analytics.njk" %}
+  {#- JS 가 없으면 햄버거 토글은 죽은 버튼이 되고 내비게이션이 통째로 사라진다.
+      그래서 «햄버거가 기본, noscript 가 예외» 로 짰다. 반대로 html.js 클래스를
+      요구하는 통상적 방식은 클래스가 없는 환경(프로토타입 캔버스 포함)에서
+      모바일 모드 자체가 안 켜져 프로토타입과 구현체가 갈린다.
+      아래는 site.css 의 @container 블록을 되돌려 기존 가로 스크롤 nav 로 복귀시킨다. -#}
+  <noscript><style>
+    @container (max-width: 767px) {
+      .nav-toggle { display: none; }
+      .nav-links {
+        display: flex; flex-direction: row; align-items: center;
+        position: static; margin-left: auto; gap: 4px;
+        max-height: none; overflow-x: auto; overflow-y: visible;
+        background: none; border-bottom: 0; padding: 0;
+      }
+      .nav-links a { padding: 6px 10px; font-size: 13px; border-bottom: 0; border-radius: var(--radius-sm); }
+      .nav-links a.nav-cta { margin-top: 0; padding: 9px 18px; border-radius: 10px; }
+    }
+  </style></noscript>
 </head>
 <body>
 
@@ -19,6 +37,39 @@
     document.querySelectorAll('[data-year]').forEach(function (el) {
       el.textContent = new Date().getFullYear();
     });
+
+    // 모바일 헤더 메뉴 — 같은 DOM 을 열고 닫는다(모바일 전용 마크업 없음).
+    (function () {
+      var toggle = document.querySelector('.nav-toggle');
+      var panel = document.getElementById('nav-panel');
+      if (!toggle || !panel) return;
+
+      function setOpen(open) {
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        panel.classList.toggle('is-open', open);
+      }
+
+      toggle.addEventListener('click', function () {
+        setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+      });
+
+      // 홈의 #about 처럼 같은 페이지 앵커로 이동한 뒤 패널이 열린 채 남지 않게 한다.
+      panel.addEventListener('click', function (e) {
+        if (e.target.closest('a')) setOpen(false);
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+          setOpen(false);
+          toggle.focus();   // 포커스를 연 버튼으로 되돌린다
+        }
+      });
+
+      // 데스크톱 폭으로 넓혔을 때 열린 상태가 남지 않게 한다.
+      window.addEventListener('resize', function () {
+        if (window.innerWidth > 767) setOpen(false);
+      });
+    })();
   </script>
 </body>
 </html>

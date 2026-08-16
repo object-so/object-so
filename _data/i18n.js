@@ -28,6 +28,7 @@ export default {
       company: "회사",
       products: "제품",
       blog: "블로그",
+      menuAriaLabel: "메뉴",
       langAriaLabel: "언어 선택",
     },
     footer: {
@@ -74,6 +75,7 @@ export default {
       company: "Company",
       products: "Products",
       blog: "Blog",
+      menuAriaLabel: "Menu",
       langAriaLabel: "Language",
     },
     footer: {
