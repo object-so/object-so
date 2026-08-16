@@ -45,7 +45,8 @@
 │   ├── check-hreflang.py            # sitemap 기반 canonical/hreflang 검증
 │   ├── check-json-ld.py             # JSON-LD 파싱 + BreadcrumbList 항목명 검증
 │   ├── check-badges.py              # 스토어 뱃지 벤더 규정 검증
-│   └── check-nav-overflow.py        # nav 오버플로 불변식 + 햄버거 마크업 검증
+│   ├── check-nav-overflow.py        # nav 오버플로 불변식 + 햄버거 마크업 검증
+│   └── check-cache-bust.py          # CSS 링크 내용 해시 검증
 ├── sitemap.njk                      # _data/pages.js -> /sitemap.xml
 ├── robots.txt
 ├── app-ads.txt
@@ -78,6 +79,7 @@ npm run check:seo
 3. sitemap, canonical, HTML hreflang 상호 일관성 검증
 4. 스토어 뱃지 벤더 규정 검증 (자산 무결성·종횡비·순서·귀속 문구·clear space)
 5. nav 오버플로 불변식 + 햄버거 마크업 + noscript 폴백 검증
+6. CSS 링크에 내용 해시가 붙어 있고 실제 파일과 일치하는지 검증
 
 개별 실행도 가능합니다.
 
@@ -86,6 +88,7 @@ npm run check:json-ld
 npm run check:hreflang
 npm run check:badges
 npm run check:nav
+npm run check:cache
 ```
 
 > ⚠️ `check:seo`는 **레이아웃 오버플로를 잡지 못합니다.** 헤더나 폭에 영향을 주는 변경을 했다면 브라우저로 **폭을 훑어야** 합니다 — 320·360·375·390·414px 와 600~900px를 20px 간격으로, 14개 페이지 전부. 과거에 390px와 1440px 두 지점만 확인했다가 601~726px 구간 오버플로가 라이브로 나갔습니다. `check:nav`는 그 대신 «넘치더라도 문서가 아니라 링크 목록만 스크롤된다»는 CSS 불변식을 잠급니다.
@@ -116,6 +119,23 @@ content/legal/privacy-policy-en.md   content/legal/terms-of-service-en.md
 > **본문은 Markdown이 아니라 HTML입니다.** front matter의 `templateEngineOverride: njk` 때문에 markdown-it 파이프라인을 타지 않습니다. `##` 같은 마크다운 문법을 쓰면 **빌드도 `check:seo`도 통과한 채** 페이지에 원문 그대로 찍힙니다. `.priv-section` 구조를 그대로 따라 쓰세요.
 
 이용약관은 공정거래위원회 「전자상거래(인터넷사이버몰) 표준약관」 제10023호(2015. 6. 26. 개정)를 준용하며 조 번호·제목 체계를 유지합니다. 시행일을 바꾸면 본문과 함께 `_data/pages.js`의 `lastmod`도 갱신합니다. 법적 효력 기준은 한국어 버전입니다.
+
+## 자산 캐시
+
+`deploy.yml`이 자산별로 다른 TTL을 줍니다 — HTML 1시간, CSS 7일, 이미지 30일, 폰트 1년(immutable).
+
+CSS는 **HTML과 짝이 맞아야 하므로** 링크에 내용 해시를 붙입니다.
+
+```njk
+<link rel="stylesheet" href="{{ '/assets/css/site.css' | bust }}" />
+→ /assets/css/site.css?v=d9cb7ffb
+```
+
+`bust` 필터(`eleventy.config.js`)가 빌드 시 파일을 sha1으로 해싱합니다. 이게 없으면 재방문자는 **새 HTML + 옛 CSS**를 최대 7일간 봅니다 — CloudFront invalidation은 엣지 캐시만 비우고 방문자 브라우저 캐시는 건드리지 못하기 때문입니다. 실제로 햄버거 배포(#19) 직후 그 상태가 발생했습니다: 데스크톱에 토글이 튀어나오고 620~780px에서 nav가 문서를 밀어냈으며, `curl`로는 새 CSS가 내려오는데 브라우저가 파싱한 CSSOM에는 `@container` 룰이 0개였습니다.
+
+**폰트는 일부러 제외했습니다.** `tokens.css`의 `@font-face`가 같은 파일을 참조하는데 `<link rel="preload">`에만 지문을 붙이면 URL이 어긋나 preload가 무효가 되고 폰트를 두 번 받습니다. 폰트를 교체할 일이 생기면 두 참조를 함께 바꿔야 합니다.
+
+이미지도 아직 지문이 없습니다(30일). 이미지는 «옛 이미지가 보인다» 정도라 레이아웃이 깨지는 CSS와 성격이 달라 후순위로 뒀습니다.
 
 ## 헤더 내비게이션
 
