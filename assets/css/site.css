@@ -91,6 +91,23 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 600px) {
   .nav-links a { padding: 6px 10px; font-size: 13px; }
   .lang { margin-left: 6px; padding-left: 10px; }
+
+  /* nav 한 줄이 뷰포트보다 넓어서 페이지 전체가 가로 스크롤되던 문제.
+     brand/lang은 고정 폭으로 두고 링크 목록만 내부 스크롤시켜 문서 폭을 지킨다.
+     ponytail: 링크 5~6개에 햄버거 토글은 과하다 — 스크롤로 충분하고, 항목이
+     늘어도(제품 추가 등) 레이아웃이 깨지지 않는다.
+     한계: 390px에서 nav가 약 40px 모자라 우측 CTA가 잘려 보인다(스크롤 어포던스로는
+     동작하지만 미관상 아쉬움). nav 항목이 7개를 넘거나 잘림이 문제가 되면 그때
+     햄버거 메뉴로 올린다 — 그 전까지는 이 비용을 지불하지 않는다. */
+  .nav-inner { gap: 8px; }
+  .brand, .lang { flex-shrink: 0; }
+  .nav-links {
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
 }
 
 /* ── Page shell ── */
@@ -285,6 +302,13 @@ table.priv th {
 }
 table.priv td { color: var(--fg-2); }
 table.priv td strong { color: var(--fg-1); font-weight: 600; }
+/* 3열 이상 표(예: 영문 privacy의 국외이전 표)가 모바일에서 문서 폭을 밀어내던 문제.
+   fixed 레이아웃이면 컬럼이 컨테이너를 나눠 갖고 셀 내용이 줄바꿈된다.
+   display:block 스크롤 해킹과 달리 table 시맨틱이 그대로 유지된다. */
+@media (max-width: 600px) {
+  table.priv { table-layout: fixed; }
+  table.priv th, table.priv td { padding: 10px 8px; overflow-wrap: anywhere; }
+}
 
 /* ── Footer ── */
 footer.foot {
@@ -477,6 +501,134 @@ footer.foot {
 .foot-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 32px 48px; align-items: flex-start; }
 .foot-intro { flex: 1 1 240px; }
 .foot-top .foot-info { flex: 1 1 360px; }
+
+/* ============================================================
+   PRODUCTS — 제품 허브(products) + 상세(dailysudoku).
+   히어로/섹션/이어브로/기능 그리드/스펙 dl/다크 밴드는 기존 DS 클래스를
+   그대로 재사용한다(.site-hero/.section/.kicker/.values-grid/.company-dl/
+   .contact-band). 여기 있는 건 제품 페이지에만 필요한 컴포넌트뿐이다.
+   ============================================================ */
+
+/* 앱 아이콘 — 스토어 아트워크. 스퀘어클 대신 22px 라운드(디자인 시스템 radius 상한). */
+.app-icon {
+  display: block; width: 96px; height: 96px;
+  border-radius: 22px; border: 1px solid var(--border-subtle);
+  background: var(--surface-subtle);
+}
+
+/* 제품 카드 그리드 (허브).
+   auto-fit + 1fr을 쓰면 제품이 하나일 때 카드가 1160px 전체로 늘어나 어색해진다.
+   auto-fill + 상한(380px)이면 카드 폭이 제품 수와 무관하게 일정하고,
+   제품이 늘어나면 왼쪽부터 자연스럽게 채워진다. */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 380px));
+  gap: 24px; justify-content: start;
+}
+.product-card {
+  background: var(--surface-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); padding: clamp(28px, 3.5vw, 40px);
+  display: flex; flex-direction: column; gap: 24px;
+}
+.product-card h2 {
+  font-size: var(--ds-text-2xl); font-weight: 700;
+  letter-spacing: var(--tracking-tight); color: var(--text-strong); margin: 0 0 10px;
+}
+.product-card p { font-size: var(--ds-text-base); line-height: var(--leading-relaxed); color: var(--text-body); margin: 0; }
+.product-card .more {
+  margin-top: auto; display: inline-flex; align-items: center; gap: 8px;
+  font-size: var(--ds-text-sm); font-weight: 600;
+  letter-spacing: var(--tracking-snug); color: var(--brand-accent);
+}
+.product-card .more:hover { color: var(--brand-accent-hover); text-decoration: none; }
+
+/* 플랫폼 배지 (iOS · Android · Web) */
+.plat-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.plat {
+  padding: 5px 12px; border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm); font-size: 12px; font-weight: 500;
+  letter-spacing: 0.04em; color: var(--text-body);
+}
+
+/* 제품 상세 히어로 — 아이콘 + 제목 가로 배치 */
+.product-head { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; margin-bottom: 28px; }
+.product-head .hero-title { margin: 0; font-size: clamp(40px, 7vw, 80px); }
+/* 기본 .hero-lede는 24ch라 제품 태그라인이 두 줄로 어색하게 끊긴다. */
+.hero-lede--wide { max-width: 30ch; }
+
+/* .values-grid를 6개 항목으로 쓸 때의 변형.
+   기본 minmax(240px,1fr)은 1064px 콘텐츠 폭에서 4열이 되어 6개 = 4+2,
+   남은 2칸이 그리드 배경(헤어라인 색)으로 비어 보인다.
+   300px로 올리면 최대 3열이라 6개가 항상 꽉 찬 행으로 떨어진다(3·2·1 모두 6의 약수). */
+.values-grid--3 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+
+/* 스크린샷 스트립 — 가로 스크롤. 페이지 폭은 건드리지 않는다. */
+.shots {
+  display: flex; gap: 20px; overflow-x: auto;
+  padding-bottom: 8px; scroll-snap-type: x proximity;
+}
+.shots img {
+  flex: 0 0 auto; width: 260px; height: auto;
+  border-radius: 22px; border: 1px solid var(--border-subtle);
+  background: var(--surface-card); scroll-snap-align: start;
+}
+.shots-note { margin: 20px 0 0; font-size: 12px; color: var(--text-muted); }
+
+/* ── 공식 스토어 뱃지 (Apple / Google) ──────────────────────
+   자산은 벤더 공식 아트워크를 **바이트 그대로** 커밋한다.
+   Apple "Use only the badge artwork provided in these guidelines" /
+   "Don't modify, angle, or animate" → SVGO·리사이즈·재인코딩 전부 금지.
+   자체 호스팅하는 이유는 규정 외에 프라이버시도 있다 — 벤더 CDN을 핫링크하면
+   방문자 IP·UA·Referer가 페이지 로드 시점에 Apple/Google로 나간다.
+
+   사이징: 높이 하나(44px, Apple 최소 40 초과) + 로케일별 aspect-ratio.
+   공식 자산은 viewBox == 아트워크라(여백 0) 이 둘로 정확히 그려진다.
+   폭을 px 리터럴로 박지 않는다 — 치수가 소수(119.66407 등)라 정수로 표현이 안 되고,
+   손으로 적는 경로가 생기면 다른 로케일 치수가 새어 들어온다.
+   aspect-ratio는 명시 height와 함께여야 로드 전 공간이 예약된다(CLS 방지).
+   scripts/check-badges.py가 아래 비율과 커밋된 SVG의 viewBox 일치를 강제한다. */
+.badge-row {
+  margin-top: 40px;
+  display: flex;
+  /* wrap이 없으면 대체 요소의 min-width:auto 때문에 줄지도 못하고 페이지에 가로 스크롤이 생긴다. */
+  flex-wrap: wrap;
+  align-items: center;
+  /* gap 0 불가: 포커스 아웃라인이 outline-offset 2 + 폭 2 = 보더박스 바깥 4px에 그려지는데,
+     0이면 그 지점이 이미 옆 뱃지의 clear space 안이라 포커스마다 여백을 침범한다. */
+  gap: 8px;
+}
+.badge-link {
+  display: inline-flex; align-items: center;
+  /* = 44 / 4. 두 벤더 모두 뱃지 높이의 ¼을 clear space로 요구하고,
+     공식 자산은 여백이 0이라 이 패딩이 규정 여백의 전부다. */
+  padding: 11px;
+}
+/* 배경색은 패딩 박스를 칠하므로 clear space 안으로 들어간다 — 어떤 상태에서도 금지. */
+.badge-link, .badge-link:hover, .badge-link:focus-visible { background: none; text-decoration: none; }
+.badge-link img { display: block; height: 44px; }
+
+/* 로케일별 종횡비 = 해당 SVG의 viewBox. 자산 1개당 1줄, 공유 금지
+   (다른 언어는 viewBox가 다르다 — 예: Play 일본어는 180×53.3334). */
+.badge-appstore-en   { aspect-ratio: 119.66407 / 40; }
+.badge-appstore-ko   { aspect-ratio: 129.70071 / 40; }
+.badge-googleplay-en { aspect-ratio: 238.96 / 70.87; }
+.badge-googleplay-ko { aspect-ratio: 238.96 / 70.87; }
+
+/* 상표 귀속 문구. 두 벤더 모두 필수이며 사이트에 한 번만 넣는다.
+   ™/℠/® 기호는 쓰지 않는다 — Apple Trademark List가 기호 대신 귀속 문구를 지시한다. */
+.badge-legal { margin: 16px 0 0; font-size: 12px; line-height: 1.7; color: var(--text-muted); }
+
+/* 관련 링크 카드 */
+.link-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.link-card {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 22px 24px; border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md); background: var(--surface-card);
+}
+.link-card:hover { border-color: var(--border-default); text-decoration: none; }
+.link-card .l { display: block; font-size: var(--ds-text-md); font-weight: 600; letter-spacing: var(--tracking-snug); color: var(--text-strong); }
+.link-card .h { display: block; margin-top: 4px; font-size: 12px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.link-card .ext { color: var(--brand-accent); }
 
 /* Generic dot accent + focus rings (light page + dark band). */
 .accent { color: var(--brand-accent); }

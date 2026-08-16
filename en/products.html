@@ -1,0 +1,51 @@
+---
+layout: layouts/base.njk
+permalink: /en/products.html
+lang: en
+slug: products
+activeNav: products
+title: "Products · Object"
+description: "Products built and shipped by Object. We build one app at a time, each doing exactly one thing."
+ogDescription: "Products built and shipped by Object."
+---
+{%- set t = i18n[lang] -%}
+  <main id="main" tabindex="-1">
+
+    <section class="site-hero">
+      <div class="shell">
+        <p class="kicker"><span>Products</span></p>
+        <h1 class="hero-title">What we're<br/>building<span class="accent" aria-hidden="true">.</span></h1>
+        <p class="hero-lede">One app at a time, each doing exactly one thing.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell section-inner">
+        <div class="product-grid">
+          <article class="product-card">
+            <img class="app-icon" src="/assets/img/products/dailysudoku-icon.webp" width="256" height="256" alt="DailySudoku app icon" loading="lazy" decoding="async" />
+            <div>
+              <h2>DailySudoku</h2>
+              <p>A fresh sudoku puzzle, every day at midnight.</p>
+            </div>
+            <div class="plat-row">
+              <span class="plat">iOS</span>
+              <span class="plat">Android</span>
+              <span class="plat">Web</span>
+            </div>
+            <a class="more" href="dailysudoku.html">View details <span aria-hidden="true">→</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section section--inverse contact-band">
+      <div class="shell section-inner">
+        <p class="kicker"><span>Contact</span></p>
+        <h2 class="contact-title">Got something to build together?</h2>
+        <p class="contact-sub">For collaborations, partnerships, and inquiries, reach out by email.<br/>We reply within 1–2 business days.</p>
+        <a class="contact-email" href="mailto:{{ site.email }}">{{ site.email }} <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
+  </main>

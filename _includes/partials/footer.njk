@@ -21,7 +21,7 @@
       </div>
       <div class="foot-bar">
         <div>© <span data-year>{% year %}</span> {{ t.footer.copyright }}</div>
-        <div class="links"><a href="{{ site.blogUrl }}" target="_blank" rel="noopener noreferrer">{{ t.footer.blogLink }}</a><a href="privacy.html"{% if slug == "privacy" %} aria-current="page"{% endif %}>{{ t.footer.privacyLink }}</a></div>
+        <div class="links"><a href="{{ site.blogUrl }}" target="_blank" rel="noopener noreferrer">{{ t.footer.blogLink }}</a><a href="privacy.html"{% if slug == "privacy" %} aria-current="page"{% endif %}>{{ t.footer.privacyLink }}</a><a href="terms.html"{% if slug == "terms" %} aria-current="page"{% endif %}>{{ t.footer.termsLink }}</a></div>
         <div class="lang-pair" aria-label="{{ t.footer.langAriaLabel }}">
           {% if lang == "ko" %}<span class="on" aria-current="true">KO</span><span class="sep" aria-hidden="true">|</span><a href="../en/{{ slug }}.html" hreflang="en">EN</a>{% else %}<a href="../ko/{{ slug }}.html" hreflang="ko">KO</a><span class="sep" aria-hidden="true">|</span><span class="on" aria-current="true">EN</span>{% endif %}
         </div>

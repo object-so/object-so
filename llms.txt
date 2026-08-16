@@ -8,13 +8,19 @@ Object(오브젝트)는 모든 것을 담으려는 슈퍼앱이나 잠시 쓰이
 - [홈 / Home](https://object.so/ko/index.html): 회사 소개와 철학, 핵심 가치, 회사 정보, 문의 안내
 - [소개 / About](https://object.so/ko/about.html): 비전·철학, 세 가지 가치(집중·장인정신·단순함), 회사 정보
 - [문의 / Contact](https://object.so/ko/contact.html): 협업·제휴·문의 이메일 안내
+- [제품 / Products](https://object.so/ko/products.html): 오브젝트가 배포 중인 제품 목록
+- [데일리스도쿠 / DailySudoku](https://object.so/ko/dailysudoku.html): 매일 자정 갱신되는 스도쿠 퍼즐 앱. iOS·Android·웹, 무료(광고 제거 인앱 구매)
 - [개인정보처리방침 / Privacy Policy](https://object.so/ko/privacy.html): 웹사이트·모바일 앱 공통 개인정보 처리방침
+- [이용약관 / Terms of Service](https://object.so/ko/terms.html): 사이버몰 이용약관. 공정거래위원회 전자상거래(인터넷사이버몰) 표준약관 제10023호 준용, 24개조
 
 ## Pages — English
 - [Home](https://object.so/en/index.html): Company introduction, philosophy, core values, company info, contact
 - [About](https://object.so/en/about.html): Vision, philosophy, three values (Focus, Craft, Simplicity), company info
 - [Contact](https://object.so/en/contact.html): Email for collaboration, partnership, and inquiries
+- [Products](https://object.so/en/products.html): Products Object builds and ships
+- [DailySudoku](https://object.so/en/dailysudoku.html): Daily sudoku puzzle app on iOS, Android, and web. Free, with a one-time in-app purchase to remove ads
 - [Privacy Policy](https://object.so/en/privacy.html): Privacy policy for the website and mobile apps (Korean version prevails)
+- [Terms of Service](https://object.so/en/terms.html): Cyber mall terms of service, based on KFTC Standard Terms No. 10023, 24 articles (Korean version prevails)
 
 ## Company facts
 - 상호 / Company: 오브젝트 (Object)
