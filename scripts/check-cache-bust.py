@@ -17,10 +17,19 @@ CloudFront invalidation 은 엣지 캐시만 비우고 방문자 브라우저 �
 
 검사 항목
 ---------
-1. 모든 페이지의 모든 `<link rel="stylesheet">` 에 `?v=<8자리 hex>` 가 있는가
+1. 빌드된 페이지의 모든 `src`/`href` 자산 참조에 `?v=<8자리 hex>` 가 있는가
 2. 그 해시가 **실제 파일 내용의 sha1 앞 8자리와 일치**하는가
    (하드코딩하거나 옛 값이 남은 경우를 잡는다 — 존재 여부만 보면 통과해버린다)
 3. 같은 자산은 모든 페이지에서 같은 해시인가 (일부 페이지만 갱신되는 상황 방지)
+
+의도적 예외 (EXEMPT 참고)
+-------------------------
+- `/assets/fonts/` — tokens.css 의 `@font-face` 가 같은 파일을 상대경로로 참조한다.
+  `<link rel=preload>` 에만 지문을 붙이면 URL 이 어긋나 preload 가 무효가 되고
+  폰트를 두 번 받는다. 교체할 일이 생기면 두 참조를 함께 바꿔야 한다.
+- og:image / twitter:image / JSON-LD logo — `content=`/JSON 안의 **절대 URL** 이라
+  이 검사의 정규식에 걸리지 않는다. 소비자가 브라우저가 아니라 소셜·검색 크롤러이고
+  각자 자기 주기로 재수집하므로 지문을 붙이지 않는다.
 """
 from __future__ import annotations
 
@@ -32,8 +41,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "_site"
 
-STYLESHEET_RE = re.compile(r'<link\s+rel="stylesheet"\s+href="([^"]+)"', re.I)
+ASSET_REF_RE = re.compile(r'\b(?:src|href)="(/assets/[^"]+)"')
 BUST_RE = re.compile(r"^(/assets/[^?]+)\?v=([0-9a-f]{8})$")
+
+# 지문을 붙이지 않는 경로. 이유는 모듈 docstring 참고.
+EXEMPT_PREFIXES = ("/assets/fonts/",)
 
 
 def content_hash(url_path: str) -> str | None:
@@ -49,23 +61,35 @@ def main() -> int:
         return 2
 
     pages = sorted(SITE.glob("ko/*.html")) + sorted(SITE.glob("en/*.html"))
+    pages += [p for p in (SITE / "index.html", SITE / "404.html") if p.exists()]
     if not pages:
         print("FAIL: 검사할 페이지를 찾지 못했다 (_site/ko, _site/en 이 비었다)")
         return 1
 
     issues: list[str] = []
     seen: dict[str, str] = {}   # asset -> hash (페이지 간 일관성 확인용)
-    checked = 0
+    checked = exempt = 0
 
     for page in pages:
         rel = page.relative_to(SITE)
-        for href in STYLESHEET_RE.findall(page.read_text(encoding="utf-8")):
+        for href in ASSET_REF_RE.findall(page.read_text(encoding="utf-8")):
+            if href.startswith(EXEMPT_PREFIXES):
+                exempt += 1
+                # 역방향 단언: 예외 자산에 지문이 붙으면 조용히 깨진다.
+                # preload URL 이 tokens.css 의 @font-face URL 과 어긋나 preload 가
+                # 무효가 되고 폰트를 두 번 받는데, 화면상으로는 아무 이상이 없다.
+                if BUST_RE.match(href):
+                    issues.append(
+                        f"{rel}: 폰트에 지문이 붙었다 — {href!r}. tokens.css 의 @font-face 는 "
+                        f"지문 없는 URL 을 참조하므로 preload 가 무효가 되고 폰트를 두 번 받는다"
+                    )
+                continue
             checked += 1
             m = BUST_RE.match(href)
             if not m:
                 issues.append(
-                    f"{rel}: 스타일시트에 내용 해시가 없다 — {href!r}. "
-                    f"head-meta.njk 에서 `| bust` 필터가 빠졌는지 확인하라"
+                    f"{rel}: 자산 참조에 내용 해시가 없다 — {href!r}. "
+                    f"템플릿에서 `| bust` 필터가 빠졌는지 확인하라"
                 )
                 continue
             asset, got = m.group(1), m.group(2)
@@ -88,8 +112,10 @@ def main() -> int:
             print(f"  - {i}")
         return 1
 
-    fingerprints = ", ".join(f"{a.split('/')[-1]}={h}" for a, h in sorted(seen.items()))
-    print(f"OK: {checked} stylesheet links across {len(pages)} pages fingerprinted ({fingerprints}).")
+    print(
+        f"OK: {checked} asset refs across {len(pages)} pages fingerprinted "
+        f"({len(seen)} distinct assets, {exempt} exempt)."
+    )
     return 0
 
 
