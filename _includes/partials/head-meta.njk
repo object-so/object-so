@@ -30,9 +30,9 @@
   <meta name="twitter:image" content="{{ site.baseUrl }}{{ site.ogImagePath }}" />
   <meta name="twitter:image:alt" content="{{ t.ogImageAlt | escape }}" />
 
-  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png" />
-  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png" />
+  <link rel="icon" href="{{ '/assets/img/favicon.svg' | bust }}" type="image/svg+xml" />
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/img/favicon-32.png' | bust }}" />
+  <link rel="apple-touch-icon" href="{{ '/assets/img/apple-touch-icon.png' | bust }}" />
 
   <link rel="preload" href="/assets/fonts/PretendardStdVariable.woff2" as="font" type="font/woff2" crossorigin />
 

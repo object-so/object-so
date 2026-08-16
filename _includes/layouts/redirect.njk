@@ -12,16 +12,16 @@
   <link rel="alternate" hreflang="en" href="{{ site.baseUrl }}/en/index.html" />
   <link rel="alternate" hreflang="x-default" href="{{ site.baseUrl }}/ko/index.html" />
 
-  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png" />
-  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png" />
+  <link rel="icon" href="{{ '/assets/img/favicon.svg' | bust }}" type="image/svg+xml" />
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/img/favicon-32.png' | bust }}" />
+  <link rel="apple-touch-icon" href="{{ '/assets/img/apple-touch-icon.png' | bust }}" />
 
   <!-- Fallback for environments where JS is disabled: default to KO. -->
   <meta http-equiv="refresh" content="0; url=/ko/index.html" />
 
   <link rel="preload" href="/assets/fonts/PretendardStdVariable.woff2" as="font" type="font/woff2" crossorigin />
 
-  <link rel="stylesheet" href="/assets/css/tokens.css" />
+  <link rel="stylesheet" href="{{ '/assets/css/tokens.css' | bust }}" />
   <style>
     .root-redirect {
       min-height: 100vh; display: grid; place-items: center;
